@@ -1,6 +1,15 @@
-const Sequelize = require('express');
-const connection = require('../config/database');
+const Sequelize = require('sequelize');
+const dbConfig = require('../config/database');
 
-const connection = new Sequelize(connection);
+const Bead = require('../models/Bead');
+const Companies = require('../models/Companies');
+
+const connection = new Sequelize(dbConfig);
+
+Bead.init(connection);
+Companies.init(connection);
+
+Companies.associate(connection.models);
+Bead.associate(connection.models)
 
 module.exports = connection;

@@ -1,12 +1,11 @@
-const { Sequelize, Model, DataTypes } = require('sequelize');
-const conection = new Sequelize('estudorest', 'root', '',{
-    host: 'localhost',
+module.exports = {
     dialect: 'mysql',
-    timezone: "-03:00",
+    host: 'localhost',
+    username: 'root',
+    password: 'root',
+    database: 'empresarest',
     define:{
         timestamps: true,
-        underscored: true,
-    }
-});
-
-module.exports = conection;
+        underscored: false,
+    },
+};
