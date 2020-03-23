@@ -12,7 +12,8 @@ class Bead extends Model {
       })
     }
     static associate(models){
-      this.hasMany(models.Companies, { foreignKey: 'companyTalaoId', as: 'companies' });
+      this.belongsTo(models.Companies, { foreignKey: 'companyTalaoId', as: 'companies' });
+
     }
   }
   

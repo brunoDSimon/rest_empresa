@@ -3,9 +3,9 @@ const BeadController = require("./controllers/BeadController");
 const CompaniesControler = require("./controllers/CompaniesController")
 const routes = express.Router();
 
-routes.get('/beads', BeadController.index);
-routes.post('/beads', BeadController.store);
+routes.get('/companies', CompaniesControler.index);
+routes.post('/companies', CompaniesControler.store);
 
-routes.get('/beads/:companyTalaoId/companies', CompaniesControler.index);
-routes.post('/beads/:companyTalaoId/companies', CompaniesControler.store);
+routes.get('/companies/:companyID/beads', BeadController.index);
+routes.post('/companies/:companyID/beads', BeadController.store);
 module.exports = routes;

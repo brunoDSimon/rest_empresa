@@ -3,31 +3,14 @@ const Beads     = require('../models/Bead');
 
 module.exports = {
     async index(req, res){
-        const { companyTalaoId } = req.params;
-        const bead = await Beads.findByPk(companyTalaoId, {
-            include: { association: 'companies'}
-        });
-
-        return res.json(bead.companies)
+      
+        const companies = await Companies.findAll();
+        return res.json(companies)
     },
     async store(req,res){
-        const { companyTalaoId } = req.params;
         const {companyName, cnpj, telephone, address, zipCode, number} = req.body;
 
-        const beads = await Beads.findByPk(companyTalaoId);
-        if(!beads){
-            return res.status(400).json({error: 'usuario nao existe'})
-        }
-        const companies = await Companies.create({
-            companyName, 
-            cnpj, 
-            telephone, 
-            address, 
-            zipCode, 
-            number, 
-            companyTalaoId,
-        });
-        
+        const companies = await Companies.create({companyName, cnpj, telephone, address, zipCode, number});
         return res.json(companies);
     }
 }

@@ -9,13 +9,6 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      companyTalaoId: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {model: 'beads', key: 'id'},
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
-      },
       companyName: {
         type: Sequelize.STRING,
         allowNull: false

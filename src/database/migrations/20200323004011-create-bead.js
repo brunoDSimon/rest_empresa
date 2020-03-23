@@ -9,13 +9,13 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      // user_id:{
-      //   type: Sequelize.INTEGER,
-      //   allowNull: false,
-      //   reference: { model: 'user', key: 'id'},
-      //   onUpdate:'CASCADE',
-      //   onDelete: 'SET NULL'
-      // },
+      companyID:{
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        reference: { model: 'companies', key: 'id'},
+        onUpdate:'CASCADE',
+        onDelete: 'CASCADE'
+      },
       reference: {
         type: Sequelize.STRING,
         allowNull: false
