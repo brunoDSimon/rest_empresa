@@ -11,22 +11,9 @@ module.exports = {
         return res.json(bead.companies)
     },
     async store(req,res){
-        const { companyID } = req.params;
+        const { companyID} = req.params;
         const {reference, value, amount, patch} = req.body;
-        const companies = await Companies.findOne({
-            where: {id: companyID}
-        });
-        if(!companies){
-            return res.status(400).json({error: 'Empresa não existente'})
-        }
-        const bead = await Bead.create({
-            reference,
-            value,
-            amount, 
-            patch, 
-            companyID,
-        });
-        
+        const bead = await Bead.create({reference, value,amount,  patch, companyID,});
         return res.json(bead);
     }
 }
