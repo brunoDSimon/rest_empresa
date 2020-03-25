@@ -6,6 +6,6 @@ const routes = express.Router();
 routes.get('/companies', CompaniesControler.index);
 routes.post('/companies', CompaniesControler.store);
 
-routes.get('/beads', BeadController.index);
+routes.get('/beads/:dateEntry/:companyID?', BeadController.index);
 routes.post('/beads/:companyID', BeadController.store);
 module.exports = routes;

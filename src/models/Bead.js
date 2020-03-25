@@ -7,6 +7,7 @@ class Bead extends Model {
         value: DataTypes.INTEGER,
         amount: DataTypes.INTEGER,
         patch: DataTypes.STRING,
+        dateEntry: DataTypes.DATEONLY,
       }, {
         sequelize
       })
