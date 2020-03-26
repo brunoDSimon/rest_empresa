@@ -7,7 +7,7 @@ module.exports = {
         const {companyID, dateEntry} = req.params;
         if(companyID != undefined){
             const bead = await Bead.findAll({
-                attributes: ['id', 'value', 'amount', 'patch', 'dateEntry', 'companyID'],
+                attributes: [[ Sequelize.literal('COALESCE(value, 0) * COALESCE(amount, 0)'), 'valueTotal'],'id', 'value', 'amount', 'patch', 'dateEntry', 'companyID'],
                 include: [{
                     association: 'companies',
                     attributes: ["companyName"],
