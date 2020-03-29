@@ -23,7 +23,7 @@ module.exports = {
                 where: {dateEntry: dateEntry},
                
             })
-            return res.json(bead);
+            return res.status(200).json({bead, messege: 'requisação efetuada com sucesso'});
 
         }else{
             const bead = await Bead.findAll({
@@ -40,7 +40,7 @@ module.exports = {
             ],
                 where: {dateEntry: dateEntry}
             })
-            return res.json(bead);
+            return res.status(200).json({bead, messege: 'requisação efetuada com sucesso'});
         }
         // const companies = await Companies.findByPk(companyID,{
         //     where: {id: companyID},
