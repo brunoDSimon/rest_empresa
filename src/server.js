@@ -7,11 +7,4 @@ const app = express();
 
 app.use(express.json());
 app.use(routes);
-app.use((req,res,next) =>{
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Credentials', true);
-    res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type');
-    next();
-})
 app.listen(3333);

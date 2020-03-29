@@ -42,16 +42,39 @@ module.exports = {
             })
             return res.status(200).json({bead, messege: 'requisação efetuada com sucesso'});
         }
-        // const companies = await Companies.findByPk(companyID,{
-        //     where: {id: companyID},
-        //     include: {association: 'beads'}
-        // })
-        // return res.json(companies.bead)
+       return res.status(400).json({messege:'erro ao invocar serviço'})
     },
     async store(req,res){
         const { companyID, userID} = req.params;
         const {reference, value, amount, patch, dateEntry} = req.body;
-        const bead = await Bead.create({reference, value,amount,  patch, dateEntry, companyID,userID});
-        return res.json(bead);
+        if(reference, value, amount, patch,dateEntry ){
+            const bead = await Bead.create({reference, value,amount,  patch, dateEntry, companyID,userID});
+            
+            return res.status(200).json({bead, messege: 'enviado com sucesso'});
+        }else{
+            return res.status(400).json({ messege: 'campos nao informado'});
+        }
+    },
+    async update(req,res){
+        const {id} = req.params
+        const {reference, value, amount, patch, dateEntry, companyID,userID} = req.body;
+        Bead.update({reference, value, amount, patch, dateEntry, companyID,userID},{
+            where: {id: id}
+        }).then(bead =>{
+            return res.status(200).json({bead, messege: 'update feito com sucesso'})
+
+        }).catch(err =>{
+            return res.status(400).json({err, messege: 'fail update'})
+        });
+    },
+    async delete(req,res){
+        const {id} = req.params;
+
+      Bead.destroy({ where:{id: id}}).then(bead =>{
+        return res.status(200).json({bead, messege: 'talao apagado com sucesso'})
+      }).catch(err =>{
+        return res.status(400).json({err, messege: 'fail destroy'})
+
+      })
     }
 }
