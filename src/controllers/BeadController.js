@@ -44,6 +44,7 @@ module.exports = {
        return res.status(400).json({messege:'erro ao invocar serviço'})
     },
     async store(req,res){
+        res.header('Access-Control-Allow-Origin', '*');
         const { companyID, userID} = req.params;
         const {reference, value, amount, patch, dateEntry} = req.body;
         if(reference, value, amount, patch,dateEntry ){
