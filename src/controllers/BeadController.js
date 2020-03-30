@@ -2,6 +2,10 @@ const Bead = require("../models/Bead");
 const Companies = require("../models/Companies");
 const Users = require("../models/Users");
 const Sequelize = require('sequelize');
+const cors = require('cors');
+const express = require("express");
+const app = express();
+
 module.exports = {
     async index(req, res){
         const {companyID, dateEntry, userID} = req.params;
@@ -44,6 +48,7 @@ module.exports = {
        return res.status(400).json({messege:'erro ao invocar serviço'})
     },
     async store(req,res){
+        app.use(cors())
         res.header('Access-Control-Allow-Origin', '*');
         res.header('Access-Control-Allow-Credentials', true);
         res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
