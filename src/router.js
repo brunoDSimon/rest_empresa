@@ -6,6 +6,15 @@ const routes = express.Router();
 const cors = require('cors');
 const app = express();
 
+app.use((req,res, next) =>{
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Content-Type', 'Accept', 'Authorization');
+    if(res.method == 'OPTIONS'){
+        res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE');
+    }
+        
+    next()
+})
 routes.get('/companies', CompaniesControler.index);
 routes.post('/companies', CompaniesControler.store);
 routes.delete('/companies/:id', CompaniesControler.delete);

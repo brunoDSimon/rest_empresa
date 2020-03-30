@@ -48,11 +48,6 @@ module.exports = {
        return res.status(400).json({messege:'erro ao invocar serviço'})
     },
     async store(req,res){
-        app.use(cors())
-        res.header('Access-Control-Allow-Origin', '*');
-        res.header('Access-Control-Allow-Credentials', true);
-        res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
-        res.header('Access-Control-Allow-Headers', 'Content-Type');
         const { companyID, userID} = req.params;
         const {reference, value, amount, patch, dateEntry} = req.body;
         if(reference, value, amount, patch,dateEntry ){
