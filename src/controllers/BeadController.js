@@ -2,7 +2,6 @@ const Bead = require("../models/Bead");
 const Companies = require("../models/Companies");
 const Users = require("../models/Users");
 const Sequelize = require('sequelize');
-
 module.exports = {
     async index(req, res){
         const {companyID, dateEntry, userID} = req.params;

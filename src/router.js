@@ -3,6 +3,8 @@ const BeadController = require("./controllers/BeadController");
 const CompaniesControler = require("./controllers/CompaniesController")
 const UsersController = require("./controllers/UsersController");
 const routes = express.Router();
+const cors = require('cors');
+const app = express();
 
 routes.get('/companies', CompaniesControler.index);
 routes.post('/companies', CompaniesControler.store);
@@ -10,7 +12,7 @@ routes.delete('/companies/:id', CompaniesControler.delete);
 routes.post('/companies/:id', CompaniesControler.update);
 
 routes.get('/beads/:userID/:dateEntry/:companyID?', BeadController.index);
-routes.post('/beads/:userID/:companyID', BeadController.store);
+routes.post('/beads/:userID/:companyID', BeadController.store , app.use(cors('Access-Control-Allow-Origin', '*')));
 routes.post('/beads/:id', BeadController.update);
 routes.delete('/beads/:id', BeadController.delete);
 
