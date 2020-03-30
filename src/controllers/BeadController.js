@@ -45,6 +45,9 @@ module.exports = {
     },
     async store(req,res){
         res.header('Access-Control-Allow-Origin', '*');
+        res.header('Access-Control-Allow-Credentials', true);
+        res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+        res.header('Access-Control-Allow-Headers', 'Content-Type');
         const { companyID, userID} = req.params;
         const {reference, value, amount, patch, dateEntry} = req.body;
         if(reference, value, amount, patch,dateEntry ){
