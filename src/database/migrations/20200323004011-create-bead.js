@@ -28,7 +28,7 @@ module.exports = {
         allowNull: false
       },
       value: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.DOUBLE,
         allowNull: false
       },
       amount: {

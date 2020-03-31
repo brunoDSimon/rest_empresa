@@ -4,7 +4,7 @@ class Bead extends Model {
     static init(sequelize) {
       super.init({
         reference: DataTypes.STRING,
-        value: DataTypes.INTEGER,
+        value: DataTypes.DOUBLE,
         amount: DataTypes.INTEGER,
         patch: DataTypes.STRING,
         dateEntry: DataTypes.DATEONLY,

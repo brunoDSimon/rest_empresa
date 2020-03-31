@@ -11,7 +11,7 @@ module.exports = {
         const {companyID, dateEntry, userID} = req.params;
         if(companyID != undefined && userID !=undefined){
             const bead = await Bead.findAll({
-                attributes: [[ Sequelize.literal('COALESCE(value, 0) * COALESCE(amount, 0)'), 'valueTotal'],'id', 'value', 'amount', 'patch', 'dateEntry', 'companyID'],
+                attributes: [[ Sequelize.literal('COALESCE(value, 0) * COALESCE(amount, 0)'), 'valueTotal'],'id', 'value', 'amount', 'patch', 'dateEntry', 'companyID', 'reference'],
                 include: [{
                     association: 'companies',
                     attributes: ["companyName"],
@@ -30,7 +30,7 @@ module.exports = {
 
         }else{
             const bead = await Bead.findAll({
-                attributes: [[ Sequelize.literal('COALESCE(value, 0) * COALESCE(amount, 0)'), 'valueTotal'],'id', 'value', 'amount', 'patch', 'dateEntry', 'companyID',],
+                attributes: [[ Sequelize.literal('COALESCE(value, 0) * COALESCE(amount, 0)'), 'valueTotal'],'id', 'value', 'amount', 'patch', 'dateEntry', 'companyID', 'reference'],
                 include: [{
                     association: 'companies',
                     attributes: ["companyName"],
@@ -48,9 +48,8 @@ module.exports = {
        return res.status(400).json({messege:'erro ao invocar serviço'})
     },
     async store(req,res){
-        const { companyID, userID} = req.params;
-        const {reference, value, amount, patch, dateEntry} = req.body;
-        if(reference, value, amount, patch,dateEntry ){
+        const {reference, value, amount, patch, dateEntry, companyID, userID} = req.body;
+        if(reference, value, amount, patch, dateEntry, companyID, userID ){
             const bead = await Bead.create({reference, value,amount,  patch, dateEntry, companyID,userID});
             
             return res.status(200).json({bead, messege: 'enviado com sucesso'});
