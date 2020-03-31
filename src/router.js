@@ -3,7 +3,6 @@ const BeadController = require("./controllers/BeadController");
 const CompaniesControler = require("./controllers/CompaniesController")
 const UsersController = require("./controllers/UsersController");
 const routes = express.Router();
-const cors = require('cors');
 const app = express();
 
 routes.use((req,res, next) =>{
