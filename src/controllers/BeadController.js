@@ -2,13 +2,14 @@ const Bead = require("../models/Bead");
 const Companies = require("../models/Companies");
 const Users = require("../models/Users");
 const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 const cors = require('cors');
 const express = require("express");
 const app = express();
 
 module.exports = {
     async index(req, res){
-        const {companyID, dateEntry, userID} = req.params;
+        const {companyID, dateEntry, userID, dateFinal} = req.params;
         if(companyID != undefined && userID !=undefined){
             const bead = await Bead.findAll({
                 attributes: [[ Sequelize.literal('COALESCE(value, 0) * COALESCE(amount, 0)'), 'valueTotal'],'id', 'value', 'amount', 'patch', 'dateEntry', 'companyID', 'reference'],
@@ -23,7 +24,11 @@ module.exports = {
                     where: {id: userID}
                 }
             ],
-                where: {dateEntry: dateEntry},
+            where: {
+                dateEntry: {
+                    [Op.between]: [dateEntry, dateFinal]
+                }
+            }
                
             })
             return res.status(200).json({bead, messege: 'requisação efetuada com sucesso'});
@@ -41,7 +46,11 @@ module.exports = {
                     where: {id: userID}
                 }
             ],
-                where: {dateEntry: dateEntry}
+            where: {
+                dateEntry: {
+                    [Op.between]: [dateEntry, dateFinal]
+                }
+            }
             })
             return res.status(200).json({bead, messege: 'requisação efetuada com sucesso'});
         }
