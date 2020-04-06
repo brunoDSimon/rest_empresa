@@ -16,9 +16,9 @@ routes.use((req,res, next) =>{
 })
 
 routes.get('/companies', CompaniesControler.index);
-routes.post('/companies', CompaniesControler.store);
+routes.post('/companies/:cnpj', CompaniesControler.store);
 routes.delete('/companies/:id', CompaniesControler.delete);
-routes.post('/companies/:id', CompaniesControler.update);
+routes.post('/companies/update/:id', CompaniesControler.update);
 
 routes.get('/beads/:userID/:dateEntry/:dateFinal/:companyID?', BeadController.index);
 routes.post('/beads', BeadController.store);

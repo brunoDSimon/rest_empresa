@@ -4,8 +4,10 @@ const Sequelize = require('sequelize');
 const Users = require('../models/Users');
 module.exports = {
     async index(req,res){
-        const users = await Users.findAll();
-        return res.json(users)
+        const users = await Users.findAll({
+            attributes: ['email', 'name']
+        });
+        return res.status(200).json({data:users, messeger: 'requisição efetuada com sucesso'})
     },
     async store(req,res){
         const {email, password, name} = req.body;

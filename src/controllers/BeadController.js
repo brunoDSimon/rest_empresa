@@ -31,7 +31,7 @@ module.exports = {
             }
                
             })
-            return res.status(200).json({bead, messege: 'requisação efetuada com sucesso'});
+            return res.status(200).json({data:bead, messege: 'requisação efetuada com sucesso'});
 
         }else{
             const bead = await Bead.findAll({
@@ -52,7 +52,7 @@ module.exports = {
                 }
             }
             })
-            return res.status(200).json({bead, messege: 'requisação efetuada com sucesso'});
+            return res.status(200).json({data:bead, messege: 'requisação efetuada com sucesso'});
         }
        return res.status(400).json({messege:'erro ao invocar serviço'})
     },
