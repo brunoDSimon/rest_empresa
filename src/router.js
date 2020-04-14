@@ -16,11 +16,12 @@ routes.use((req,res, next) =>{
 })
 
 routes.get('/companies', CompaniesControler.index);
-routes.post('/companies/:cnpj', CompaniesControler.store);
+routes.post('/companies', CompaniesControler.store);
+routes.get('/companies/verificarCNPJ/:cnpj', CompaniesControler.return);
 routes.delete('/companies/:id', CompaniesControler.delete);
 routes.post('/companies/update/:id', CompaniesControler.update);
 
-routes.get('/beads/:userID/:dateEntry/:dateFinal/:companyID?', BeadController.index);
+routes.get('/beads/:userID?/:dateEntry/:dateFinal/:companyID', BeadController.index);
 routes.post('/beads', BeadController.store);
 routes.post('/beads/:id', BeadController.update);
 routes.delete('/beads/:id', BeadController.delete);

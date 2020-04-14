@@ -5,7 +5,7 @@ const Users = require('../models/Users');
 module.exports = {
     async index(req,res){
         const users = await Users.findAll({
-            attributes: ['email', 'name']
+            attributes: ['id','email', 'name']
         });
         return res.status(200).json({data:users, messeger: 'requisição efetuada com sucesso'})
     },

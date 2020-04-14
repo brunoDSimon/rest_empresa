@@ -39,11 +39,12 @@ module.exports = {
                 include: [{
                     association: 'companies',
                     attributes: ["companyName"],
+                    where: {id : companyID}, 
                 },
                 {
                     association: 'users',
                     attributes: ['name'],
-                    where: {id: userID}
+                    // where: {id: userID}
                 }
             ],
             where: {

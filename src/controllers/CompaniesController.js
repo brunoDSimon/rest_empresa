@@ -7,9 +7,17 @@ module.exports = {
         const companies = await Companies.findAll();
         return res.status(200).json({data:companies, messege: 'requisição efetuada com sucesso' })
     },
-    async store(req,res){
+    async return(req,res){
         const {cnpj} = req.params;
-        const {companyName, telephone, address, zipCode, number} = req.body;
+        const companies = await Companies.findOne({cnpj, where: {cnpj:cnpj}});
+        if(!companies){
+            return res.status(200).json({data: true, messege: 'Compania não existe'})
+        }else{
+            return res.status(200).json({data: false, messege: 'Compania existente'})
+        }
+    },
+    async store(req,res){
+        const {companyName, telephone, address, zipCode, number, cnpj} = req.body;
         const companies = await Companies.findOne({cnpj, where: {cnpj:cnpj}});
 
         if(!companies){
