@@ -6,7 +6,8 @@ const Op = Sequelize.Op;
 const cors = require('cors');
 const express = require("express");
 const app = express();
-
+const pdf = require('html-pdf');
+const ejs = require('ejs');
 module.exports = {
     async index(req, res){
         const {companyID, dateEntry, userID, dateFinal} = req.query;
@@ -88,5 +89,22 @@ module.exports = {
         return res.status(400).json({err, messege: 'fail destroy'})
 
       })
+    },
+    async pdf(req,res){
+        ejs.renderFile("./index.ejs",{}, (err, html)=>{
+            if(err){
+                console.log(err)
+            }else{
+                console.log(html)
+            }
+        })
+        // pdf.create("bruno", {}).toFile("../meupdf.pdf", (error,res) =>{
+        //     if(error){
+        //         console.log(error)
+        //     }else{
+        //          console.log(res);
+        //     }
+        // })
+        return res.status(200).json({messege: 'pdf gerado com sucesso'})
     }
 }

@@ -3,7 +3,6 @@ const BeadController = require("./controllers/BeadController");
 const CompaniesControler = require("./controllers/CompaniesController")
 const UsersController = require("./controllers/UsersController");
 const routes = express.Router();
-const app = express();
 
 routes.use((req,res, next) =>{
     res.header('Access-Control-Allow-Origin', '*');
@@ -25,6 +24,7 @@ routes.get('/beads', BeadController.index);
 routes.post('/beads', BeadController.store);
 routes.post('/beads/:id', BeadController.update);
 routes.delete('/beads/:id', BeadController.delete);
+routes.get('/pdf', BeadController.pdf)
 
 routes.post('/user', UsersController.store)
 routes.get('/user', UsersController.index);
