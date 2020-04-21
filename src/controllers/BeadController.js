@@ -9,8 +9,8 @@ const app = express();
 
 module.exports = {
     async index(req, res){
-        const {companyID, dateEntry, userID, dateFinal} = req.params;
-        if(companyID != undefined && userID !=undefined){
+        const {companyID, dateEntry, userID, dateFinal} = req.query;
+        if(companyID != undefined && userID !=undefined && isNaN(userID)){
             const bead = await Bead.findAll({
                 attributes: [[ Sequelize.literal('COALESCE(value, 0) * COALESCE(amount, 0)'), 'valueTotal'],'id', 'value', 'amount', 'patch', 'dateEntry', 'companyID', 'reference'],
                 include: [{
