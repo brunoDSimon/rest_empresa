@@ -28,5 +28,6 @@ routes.delete('/beads/:id', BeadController.delete);
 
 routes.post('/user', UsersController.store)
 routes.get('/user', UsersController.index);
+routes.post('/auth', UsersController.auth);
 
 module.exports = routes;
