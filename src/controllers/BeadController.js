@@ -8,6 +8,10 @@ const express = require("express");
 const app = express();
 const pdf = require('html-pdf');
 const ejs = require('ejs');
+let path = require("path");
+var moment = require('moment');
+
+
 module.exports = {
     async index(req, res){
         const {companyID, dateEntry, userID, dateFinal} = req.query;
@@ -91,20 +95,72 @@ module.exports = {
       })
     },
     async pdf(req,res){
-        ejs.renderFile("./index.ejs",{}, (err, html)=>{
-            if(err){
-                console.log(err)
-            }else{
-                console.log(html)
+        let options ={
+            "format": "A4",
+            "orientation": "portrait",
+            "border": "0", 
+        }
+        const {companyID, dateEntry, userID, dateFinal} = req.query;
+        if(companyID != undefined && userID !=undefined && isNaN(userID)){
+            const bead = await Bead.findAll({
+                attributes: [[ Sequelize.literal('COALESCE(value, 0) * COALESCE(amount, 0)'), 'valueTotal'],'id', 'value', 'amount', 'patch', 'dateEntry', 'companyID', 'reference'],
+                include: [{
+                    association: 'companies',
+                    attributes: ["companyName"],
+                    where: {id : companyID}, 
+                },
+                {
+                    association: 'users',
+                    attributes: ['name'],
+                    where: {id: userID}
+                }
+            ],
+            where: {
+                dateEntry: {
+                    [Op.between]: [dateEntry, dateFinal]
+                }
             }
-        })
-        // pdf.create("bruno", {}).toFile("../meupdf.pdf", (error,res) =>{
-        //     if(error){
-        //         console.log(error)
-        //     }else{
-        //          console.log(res);
-        //     }
-        // })
+               
+            })
+            return res.status(200).json({data:bead, messege: 'requisação efetuada com sucesso'});
+
+        }else{
+            const bead = await Bead.findAll({
+                attributes: [[ Sequelize.literal('COALESCE(value, 0) * COALESCE(amount, 0)'), 'valueTotal'],'id', 'value', 'amount', 'patch', 'dateEntry', 'companyID', 'reference'],
+                include: [{
+                    association: 'companies',
+                    attributes: ["companyName"],
+                    where: {id : companyID}, 
+                },
+                {
+                    association: 'users',
+                    attributes: ['name'],
+                    // where: {id: userID}
+                }
+            ],
+            where: {
+                dateEntry: {
+                    [Op.between]: [dateEntry, dateFinal]
+                }
+            }
+            })
+            ejs.renderFile(path.join(__dirname, './index.ejs'),{bead:bead}, (err, html)=>{
+                if(err){
+                    console.log(err)
+                }else{
+                    pdf.create(html, options).toFile("../meupdf.pdf", (error,res) =>{
+                        if(error){
+                            console.log(error)
+                        }else{
+                             console.log(res);
+                        }
+                    })
+                }
+            })
+            return res.status(200).json({messege: 'requisação efetuada com sucesso', data:bead});
+        }
+       
+       
         return res.status(200).json({messege: 'pdf gerado com sucesso'})
     }
 }
