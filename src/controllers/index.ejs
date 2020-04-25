@@ -13,6 +13,21 @@
             width: 2.598px !important;
         }
     </style>
+    <script>
+        function mascaraData(campoData){
+              var data = campoData.value;
+              if (data.length == 2){
+                  data = data + '/';
+                  document.forms[0].data.value = data;
+      return true;              
+              }
+              if (data.length == 5){
+                  data = data + '/';
+                  document.forms[0].data.value = data;
+                  return true;
+              }
+         }
+    </script>
     <title>PDF</title>
   </head>
   <body>
@@ -51,9 +66,9 @@
                         <td><%= beads.reference%></td>
                         <td><%= beads.patch%></td>
                         <td><%= beads.amount%></td>
-                        <td><%= beads.value%></td>
-                        <td><%= beads.dateEntry%></td>
-                        <td><%= beads.valueTotal%></td>
+                        <td><%= (beads.value).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})%></td>
+                        <td><%= moment(beads.dateEntry).format( 'DD-MM-YYYY')%></td>
+                        <td><%=(beads.value * beads.amount).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})%></td>
                     </tr>
                     <% }) %>         
                 </tbody>

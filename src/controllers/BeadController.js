@@ -144,7 +144,7 @@ module.exports = {
                 }
             }
             })
-            ejs.renderFile(path.join(__dirname, './index.ejs'),{bead:bead}, (err, html)=>{
+            ejs.renderFile(path.join(__dirname, './index.ejs'),{bead:bead, moment:moment}, (err, html)=>{
                 if(err){
                     console.log(err)
                 }else{
