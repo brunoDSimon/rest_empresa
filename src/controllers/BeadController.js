@@ -133,7 +133,6 @@ module.exports = {
                         console.log(error)
                     }else{
                         console.log(res);
-                        chamabase();
                     }
                 })
             }
