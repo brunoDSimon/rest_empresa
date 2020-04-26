@@ -6,6 +6,12 @@ const Op = Sequelize.Op;
 const cors = require('cors');
 const express = require("express");
 const app = express();
+const pdf = require('html-pdf');
+const ejs = require('ejs');
+let path = require("path");
+var moment = require('moment');
+const pdf2base64 = require('pdf-to-base64');
+
 
 module.exports = {
     async index(req, res){
@@ -88,5 +94,59 @@ module.exports = {
         return res.status(400).json({err, messege: 'fail destroy'})
 
       })
+    },
+    async pdf(req,res){
+        let options ={
+            "format": "A4",
+            "orientation": "portrait",
+            "border": "0", 
+            
+        }
+        
+        const {companyID, dateEntry, dateFinal} = req.query;
+        const bead = await Bead.findAll({
+            attributes: [[ Sequelize.literal('COALESCE(value, 0) * COALESCE(amount, 0)'), 'valueTotal'],'id', 'value', 'amount', 'patch', 'dateEntry', 'companyID', 'reference'],
+            include: [{
+                association: 'companies',
+                attributes: ["companyName"],
+                where: {id : companyID}, 
+            }],
+        where: {
+            dateEntry: {
+                [Op.between]: [dateEntry, dateFinal]
+            }
+        }
+        })
+        let sumValueTotal = await bead.reduce((sum,item) =>{
+            return sum + item.amount * item.value
+        },0)
+        let sumBags = await bead.reduce((sum,item) =>{
+            return sum + item.amount 
+        },0)
+        ejs.renderFile(path.join(__dirname, './index.ejs'),{bead:bead, moment:moment, dateEntry:dateEntry,dateFinal:dateFinal, sumValueTotal:sumValueTotal, sumBags:sumBags}, (err, html)=>{
+            if(err){
+                console.log(err)
+            }else{
+                var filename = this.dateEntry+'.pdf';
+                pdf.create(html, options).toFile("../meupdf.pdf", (error,res) =>{
+                    if(error){
+                        console.log(error)
+                    }else{
+                        console.log(res);
+                        chamabase();
+                    }
+                })
+            }
+        })
+            pdf2base64("/Users/bs59035/workspace/node/meupdf.pdf").then(response => {    
+                var base64 = response;
+                return res.status(200).json({messege: 'requisação efetuada com sucesso', base64:base64});
+    
+             }).catch(
+                 (error) => {
+                    return res.status(400).json({messege: 'erro inesperado'});
+                }
+             )
+        
     }
 }
