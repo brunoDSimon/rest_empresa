@@ -25,6 +25,7 @@ routes.post('/beads', BeadController.store);
 routes.post('/beads/:id', BeadController.update);
 routes.delete('/beads/:id', BeadController.delete);
 routes.get('/pdf', BeadController.pdf)
+routes.get('/extrato', BeadController.extrato)
 
 routes.post('/user', UsersController.store)
 routes.get('/user', UsersController.index);

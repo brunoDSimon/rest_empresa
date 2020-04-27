@@ -147,5 +147,551 @@ module.exports = {
                 }
              )
         
+    },
+    async extrato(req, res){
+        let data =
+            {
+                "totalizadores": {
+        
+                    "valorTotal": 500,
+        
+                    "valorPendente": -300,
+        
+                    "valorPago": 200,
+        
+                    "valorDesconto": 50
+        
+                },
+        
+                "resumo": [
+        
+                    {
+        
+                        "descricao": "Recarga",
+        
+                        "valorTotal": 200,
+        
+                        "valorPendente": 200,
+        
+                        "valorPago": 0,
+        
+                        "situacao": "Pendente",
+        
+                        "quantidade": 39,
+        
+                        "desconto": 0,
+        
+                        "numeroDocumento": "0141412034",
+        
+                        "agrupador": "recarga"
+        
+                    },
+        
+                    {
+        
+                        "descricao": "Get Data",
+        
+                        "valorTotal": 50,
+        
+                        "valorPendente": 0,
+        
+                        "valorPago": 50,
+        
+                        "situacao": "Pago",
+        
+                        "quantidade": 1,
+        
+                        "desconto": 50,
+        
+                        "numeroDocumento": "0141412033",
+        
+                        "agrupador": "getdata"
+        
+                    },
+        
+                    {
+        
+                        "descricao": "Get Data",
+        
+                        "valorTotal": 50,
+        
+                        "valorPendente": 0,
+        
+                        "valorPago": 50,
+        
+                        "situacao": "Pago",
+        
+                        "quantidade": 1,
+        
+                        "desconto": 50,
+        
+                        "numeroDocumento": "0141412033",
+        
+                        "agrupador": "getdata"
+        
+                    },
+                    {
+        
+                        "descricao": "Get Data",
+        
+                        "valorTotal": 50,
+        
+                        "valorPendente": 0,
+        
+                        "valorPago": 50,
+        
+                        "situacao": "Pago",
+        
+                        "quantidade": 1,
+        
+                        "desconto": 50,
+        
+                        "numeroDocumento": "0141412033",
+        
+                        "agrupador": "getdata"
+        
+                    },
+                    {
+        
+                        "descricao": "Get Data",
+        
+                        "valorTotal": 50,
+        
+                        "valorPendente": 0,
+        
+                        "valorPago": 50,
+        
+                        "situacao": "Pago",
+        
+                        "quantidade": 1,
+        
+                        "desconto": 50,
+        
+                        "numeroDocumento": "0141412033",
+        
+                        "agrupador": "getdata"
+        
+                    },
+                    {
+        
+                        "descricao": "Get Data",
+        
+                        "valorTotal": 50,
+        
+                        "valorPendente": 0,
+        
+                        "valorPago": 50,
+        
+                        "situacao": "Pago",
+        
+                        "quantidade": 1,
+        
+                        "desconto": 50,
+        
+                        "numeroDocumento": "0141412033",
+        
+                        "agrupador": "getdata"
+        
+                    },
+                    {
+        
+                        "descricao": "Get Data",
+        
+                        "valorTotal": 50,
+        
+                        "valorPendente": 0,
+        
+                        "valorPago": 50,
+        
+                        "situacao": "Pago",
+        
+                        "quantidade": 1,
+        
+                        "desconto": 50,
+        
+                        "numeroDocumento": "0141412033",
+        
+                        "agrupador": "getdata"
+        
+                    },
+                    {
+        
+                        "descricao": "Get Data",
+        
+                        "valorTotal": 50,
+        
+                        "valorPendente": 0,
+        
+                        "valorPago": 50,
+        
+                        "situacao": "Pago",
+        
+                        "quantidade": 1,
+        
+                        "desconto": 50,
+        
+                        "numeroDocumento": "0141412033",
+        
+                        "agrupador": "getdata"
+        
+                    },
+                    {
+        
+                        "descricao": "Get Data",
+        
+                        "valorTotal": 50,
+        
+                        "valorPendente": 0,
+        
+                        "valorPago": 50,
+        
+                        "situacao": "Pago",
+        
+                        "quantidade": 1,
+        
+                        "desconto": 50,
+        
+                        "numeroDocumento": "0141412033",
+        
+                        "agrupador": "getdata"
+        
+                    },
+                    {
+        
+                        "descricao": "Get Data",
+        
+                        "valorTotal": 50,
+        
+                        "valorPendente": 0,
+        
+                        "valorPago": 50,
+        
+                        "situacao": "Pago",
+        
+                        "quantidade": 1,
+        
+                        "desconto": 50,
+        
+                        "numeroDocumento": "0141412033",
+        
+                        "agrupador": "getdata"
+        
+                    },
+                    {
+        
+                        "descricao": "Get Data",
+        
+                        "valorTotal": 50,
+        
+                        "valorPendente": 0,
+        
+                        "valorPago": 50,
+        
+                        "situacao": "Pago",
+        
+                        "quantidade": 1,
+        
+                        "desconto": 50,
+        
+                        "numeroDocumento": "0141412033",
+        
+                        "agrupador": "getdata"
+        
+                    }
+                ],
+        
+                "detalhe": [
+        
+                    {
+        
+                        "agrupador": "recarga",
+        
+                        "dataFaturamento": "2020-01-20T12:12:11",
+        
+                        "situacao": "Pendente",
+        
+                        "valor": 12,
+        
+                        "quantidade": 1,
+        
+                        "titulo": "Recarga Telefonia",
+        
+                        "descricao": "VIVO VAR BR 7 REAIS",
+        
+                        "numeroDocumento": "0141412034"
+        
+                    },
+        
+                    {
+        
+                        "agrupador": "getdata",
+        
+                        "dataFaturamento": "2020-02-20T20:12:11",
+        
+                        "situacao": "Pago",
+        
+                        "valor": 50,
+        
+                        "quantidade": 1,
+        
+                        "titulo": "Get Data Mastercard",
+        
+                        "descricao": "PACOTE AVANÇADO - LMI",
+        
+                        "numeroDocumento": "0141412033"
+        
+                    },
+                    {
+        
+                        "agrupador": "getdata",
+        
+                        "dataFaturamento": "2020-02-20T20:12:11",
+        
+                        "situacao": "Pago",
+        
+                        "valor": 50,
+        
+                        "quantidade": 1,
+        
+                        "titulo": "Get Data Mastercard",
+        
+                        "descricao": "PACOTE AVANÇADO - LMI",
+        
+                        "numeroDocumento": "0141412033"
+        
+                    },
+                    {
+        
+                        "agrupador": "getdata",
+        
+                        "dataFaturamento": "2020-02-20T20:12:11",
+        
+                        "situacao": "Pago",
+        
+                        "valor": 50,
+        
+                        "quantidade": 1,
+        
+                        "titulo": "Get Data Mastercard",
+        
+                        "descricao": "PACOTE AVANÇADO - LMI",
+        
+                        "numeroDocumento": "0141412033"
+        
+                    },
+                    {
+        
+                        "agrupador": "getdata",
+        
+                        "dataFaturamento": "2020-02-20T20:12:11",
+        
+                        "situacao": "Pago",
+        
+                        "valor": 50,
+        
+                        "quantidade": 1,
+        
+                        "titulo": "Get Data Mastercard",
+        
+                        "descricao": "PACOTE AVANÇADO - LMI",
+        
+                        "numeroDocumento": "0141412033"
+        
+                    },
+                    {
+        
+                        "agrupador": "getdata",
+        
+                        "dataFaturamento": "2020-02-20T20:12:11",
+        
+                        "situacao": "Pago",
+        
+                        "valor": 50,
+        
+                        "quantidade": 1,
+        
+                        "titulo": "Get Data Mastercard",
+        
+                        "descricao": "PACOTE AVANÇADO - LMI",
+        
+                        "numeroDocumento": "0141412033"
+        
+                    },
+                    {
+        
+                        "agrupador": "getdata",
+        
+                        "dataFaturamento": "2020-02-20T20:12:11",
+        
+                        "situacao": "Pago",
+        
+                        "valor": 50,
+        
+                        "quantidade": 1,
+        
+                        "titulo": "Get Data Mastercard",
+        
+                        "descricao": "PACOTE AVANÇADO - LMI",
+        
+                        "numeroDocumento": "0141412033"
+        
+                    },
+                    {
+        
+                        "agrupador": "getdata",
+        
+                        "dataFaturamento": "2020-02-20T20:12:11",
+        
+                        "situacao": "Pago",
+        
+                        "valor": 50,
+        
+                        "quantidade": 1,
+        
+                        "titulo": "Get Data Mastercard",
+        
+                        "descricao": "PACOTE AVANÇADO - LMI",
+        
+                        "numeroDocumento": "0141412033"
+        
+                    },
+                    {
+        
+                        "agrupador": "getdata",
+        
+                        "dataFaturamento": "2020-02-20T20:12:11",
+        
+                        "situacao": "Pago",
+        
+                        "valor": 50,
+        
+                        "quantidade": 1,
+        
+                        "titulo": "Get Data Mastercard",
+        
+                        "descricao": "PACOTE AVANÇADO - LMI",
+        
+                        "numeroDocumento": "0141412033"
+        
+                    },
+                    {
+        
+                        "agrupador": "getdata",
+        
+                        "dataFaturamento": "2020-02-20T20:12:11",
+        
+                        "situacao": "Pago",
+        
+                        "valor": 50,
+        
+                        "quantidade": 1,
+        
+                        "titulo": "Get Data Mastercard",
+        
+                        "descricao": "PACOTE AVANÇADO - LMI",
+        
+                        "numeroDocumento": "0141412033"
+        
+                    },
+                    {
+        
+                        "agrupador": "getdata",
+        
+                        "dataFaturamento": "2020-02-20T20:12:11",
+        
+                        "situacao": "Pago",
+        
+                        "valor": 50,
+        
+                        "quantidade": 1,
+        
+                        "titulo": "Get Data Mastercard",
+        
+                        "descricao": "PACOTE AVANÇADO - LMI",
+        
+                        "numeroDocumento": "0141412033"
+        
+                    },
+                    {
+        
+                        "agrupador": "getdata",
+        
+                        "dataFaturamento": "2020-02-20T20:12:11",
+        
+                        "situacao": "Pago",
+        
+                        "valor": 50,
+        
+                        "quantidade": 1,
+        
+                        "titulo": "Get Data Mastercard",
+        
+                        "descricao": "PACOTE AVANÇADO - LMI",
+        
+                        "numeroDocumento": "0141412033"
+        
+                    },
+                    {
+        
+                        "agrupador": "getdata",
+        
+                        "dataFaturamento": "2020-02-20T20:12:11",
+        
+                        "situacao": "Pago",
+        
+                        "valor": 50,
+        
+                        "quantidade": 1,
+        
+                        "titulo": "Get Data Mastercard",
+        
+                        "descricao": "PACOTE AVANÇADO - LMI",
+        
+                        "numeroDocumento": "0141412033"
+        
+                    },
+                    {
+        
+                        "agrupador": "getdata",
+        
+                        "dataFaturamento": "2020-02-20T20:12:11",
+        
+                        "situacao": "Pago",
+        
+                        "valor": 50,
+        
+                        "quantidade": 1,
+        
+                        "titulo": "Get Data Mastercard",
+        
+                        "descricao": "PACOTE AVANÇADO - LMI",
+        
+                        "numeroDocumento": "0141412033"
+        
+                    },
+                    {
+        
+                        "agrupador": "getdata",
+        
+                        "dataFaturamento": "2020-02-20T20:12:11",
+        
+                        "situacao": "Pago",
+        
+                        "valor": 50,
+        
+                        "quantidade": 1,
+        
+                        "titulo": "Get Data Mastercard",
+        
+                        "descricao": "PACOTE AVANÇADO - LMI",
+        
+                        "numeroDocumento": "0141412033"
+        
+                    }
+        
+                ]
+        
+            }
+        res.status(200).json({data:data})
     }
 }
