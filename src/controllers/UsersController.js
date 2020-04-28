@@ -3,6 +3,14 @@ const Companies = require("../models/Companies");
 const Sequelize = require('sequelize');
 const Users = require('../models/Users');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const authConfig = require('../config/auth');
+
+function gerarToken(params ={}) {
+    return jwt.sign(params, authConfig.secret,{
+        expiresIn: 86400,
+    })
+}
 
 module.exports = {
     async index(req,res){
@@ -31,12 +39,12 @@ module.exports = {
             if(user){
                 var correct = bcrypt.compareSync(password, user.password)
                 if(correct){
-                    res.status(200).json({user, messege: 'requisição efetuada com sucesso'})
+                    res.status(200).json({user:user,token:gerarToken({id:user.id}), messege: 'requisição efetuada com sucesso'})
                 }else{
                     res.status(200).send({messege: 'verificar usuario ou senha'})
                 }
             }else{
-                res.status(200).send({messege: 'verificar usuario ou senha'})
+                res.status(200).send({messege: 'verificar usuario ou senha'}, )
             }
         })
         
