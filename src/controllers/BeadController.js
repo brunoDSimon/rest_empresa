@@ -102,7 +102,6 @@ module.exports = {
             "border": "0", 
             
         }
-        
         const {companyID, dateEntry, dateFinal} = req.query;
         const bead = await Bead.findAll({
             attributes: [[ Sequelize.literal('COALESCE(value, 0) * COALESCE(amount, 0)'), 'valueTotal'],'id', 'value', 'amount', 'patch', 'dateEntry', 'companyID', 'reference'],
@@ -123,29 +122,34 @@ module.exports = {
         let sumBags = await bead.reduce((sum,item) =>{
             return sum + item.amount 
         },0)
-        ejs.renderFile(path.join(__dirname, './index.ejs'),{bead:bead, moment:moment, dateEntry:dateEntry,dateFinal:dateFinal, sumValueTotal:sumValueTotal, sumBags:sumBags}, (err, html)=>{
-            if(err){
-                console.log(err)
-            }else{
-                var filename = this.dateEntry+'.pdf';
-                pdf.create(html, options).toFile("../meupdf.pdf", (error,res) =>{
-                    if(error){
-                        console.log(error)
-                    }else{
-                        console.log(res);
-                    }
-                })
-            }
-        })
-            pdf2base64("/Users/bs59035/workspace/node/meupdf.pdf").then(response => {    
-                var base64 = response;
-                return res.status(200).json({messege: 'requisação efetuada com sucesso', base64:base64});
-    
-             }).catch(
-                 (error) => {
-                    return res.status(400).json({messege: 'erro inesperado'});
-                }
-             )
+        if(bead.length){
+           ejs.renderFile(path.join(__dirname, '../views/beads/index.ejs'),
+           {bead:bead, moment:moment, dateEntry:dateEntry,dateFinal:dateFinal, sumValueTotal:sumValueTotal, sumBags:sumBags}, 
+           (err, html)=>{
+               if(err){
+                   console.log(err)
+               }else{
+                   pdf.create(html, options).toFile("pdf/relatorio_de_pagamento.pdf", (error,res) =>{
+                       if(error){
+                           console.log(error)
+                       }else{
+                           console.log(res);
+                       }
+                   })
+               }
+           })
+               pdf2base64("/Users/bs59035/workspace/node/rest_empresa/pdf/relatorio_de_pagamento.pdf").then(response => {    
+                   var base64 = response;
+                   return res.status(200).json({messege: 'requisação efetuada com sucesso', base64:base64});
+       
+                }).catch(
+                    (error) => {
+                       return res.status(400).json({messege: 'erro inesperado'});
+                   }
+                )
+        }else{
+            return res.status(200).json({messege: 'não a dados para essa consulta'});
+        }
         
     }
 }
