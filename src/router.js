@@ -2,6 +2,8 @@ const express = require('express');
 const BeadController = require("./controllers/BeadController");
 const CompaniesControler = require("./controllers/CompaniesController")
 const UsersController = require("./controllers/UsersController");
+const authMiddlewares = require('./middlewares/auth');
+
 const routes = express.Router();
 
 routes.use((req,res, next) =>{
@@ -13,8 +15,8 @@ routes.use((req,res, next) =>{
         
     next()
 })
-
-routes.get('/companies', CompaniesControler.index);
+// routes.use(authMiddlewares);
+routes.get('/companies',authMiddlewares, CompaniesControler.index);
 routes.post('/companies', CompaniesControler.store);
 routes.get('/companies/verificarCNPJ/:cnpj', CompaniesControler.return);
 routes.delete('/companies/:id', CompaniesControler.delete);

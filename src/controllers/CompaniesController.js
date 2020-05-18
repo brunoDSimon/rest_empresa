@@ -5,7 +5,7 @@ module.exports = {
     async index(req, res){
       
         const companies = await Companies.findAll();
-        return res.status(200).json({data:companies, messege: 'requisição efetuada com sucesso' })
+        return res.status(200).json({data:companies, messege: 'requisição efetuada com sucesso', user: req.userId })
     },
     async return(req,res){
         const {cnpj} = req.params;
