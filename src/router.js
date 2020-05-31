@@ -16,7 +16,8 @@ routes.use((req,res, next) =>{
     next()
 })
 // routes.use(authMiddlewares);
-routes.get('/companies',authMiddlewares, CompaniesControler.index);
+// routes.get('/companies',authMiddlewares, CompaniesControler.index);
+routes.get('/companies', CompaniesControler.index);
 routes.post('/companies', CompaniesControler.store);
 routes.get('/companies/verificarCNPJ/:cnpj', CompaniesControler.return);
 routes.delete('/companies/:id', CompaniesControler.delete);
@@ -27,6 +28,9 @@ routes.post('/beads', BeadController.store);
 routes.post('/beads/:id', BeadController.update);
 routes.delete('/beads/:id', BeadController.delete);
 routes.get('/pdf', BeadController.pdf)
+routes.get('/bead/sumTotalGroupCompanies', BeadController.SumCompaniesValueTotal);
+routes.get('/bead/sumGroupMonth', BeadController.sumGroupMonth);
+routes.get('/bead/SumGroupMonthCompanies', BeadController.sumGroupMonthCompanies);
 
 routes.post('/user', UsersController.store)
 routes.get('/user', UsersController.index);
