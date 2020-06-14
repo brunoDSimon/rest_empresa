@@ -16,21 +16,22 @@ routes.use((req,res, next) =>{
     next()
 })
 // routes.use(authMiddlewares);
-// routes.get('/companies',authMiddlewares, CompaniesControler.index);
-routes.get('/companies', CompaniesControler.index);
-routes.post('/companies', CompaniesControler.store);
-routes.get('/companies/verificarCNPJ/:cnpj', CompaniesControler.return);
-routes.delete('/companies/:id', CompaniesControler.delete);
-routes.post('/companies/update/:id', CompaniesControler.update);
+routes.get('/companies',authMiddlewares, CompaniesControler.index);
+// routes.get('/companies', CompaniesControler.index);
+routes.post('/companies',authMiddlewares, CompaniesControler.store);
+routes.get('/companies/verificarCNPJ/:cnpj',authMiddlewares, CompaniesControler.return);
+routes.delete('/companies/:id',authMiddlewares, CompaniesControler.delete);
+routes.post('/companies/update/:id',authMiddlewares, CompaniesControler.update);
 
-routes.get('/beads', BeadController.index);
-routes.post('/beads', BeadController.store);
-routes.post('/beads/:id', BeadController.update);
-routes.delete('/beads/:id', BeadController.delete);
-routes.get('/pdf', BeadController.pdf)
-routes.get('/bead/sumTotalGroupCompanies', BeadController.SumCompaniesValueTotal);
-routes.get('/bead/sumGroupMonth', BeadController.sumGroupMonth);
-routes.get('/bead/SumGroupMonthCompanies', BeadController.sumGroupMonthCompanies);
+routes.get('/beads',authMiddlewares, BeadController.index);
+routes.post('/beads',authMiddlewares, BeadController.store);
+routes.post('/beads/:id',authMiddlewares, BeadController.update);
+routes.delete('/beads/:id',authMiddlewares, BeadController.delete);
+routes.get('/pdf',authMiddlewares, BeadController.pdf)
+routes.get('/bead/sumTotalGroupCompanies',authMiddlewares, BeadController.SumCompaniesValueTotal);
+routes.get('/bead/sumGroupMonth',authMiddlewares, BeadController.sumGroupMonth);
+routes.get('/bead/SumGroupMonthCompanies',authMiddlewares, BeadController.sumGroupMonthCompanies);
+routes.get('/bead/totalSumPeriod',authMiddlewares, BeadController.totalSumPeriod);
 
 routes.post('/user', UsersController.store)
 routes.get('/user', UsersController.index);
