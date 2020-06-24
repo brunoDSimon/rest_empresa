@@ -194,5 +194,71 @@ module.exports = {
             } 
         });
         return res.status(200).send({status:{value: '0',messege: 'requisição efetuada com sucesso'},data:{totalSumPeriod, periodo:{dateEntry,dateFinal}}});
+    },
+    async generatePayment(req,res, next){
+        let options ={
+            "format": "A4",
+            "orientation": "portrait",
+            "border": "0", 
+            
+        }
+        const {userID, dateEntry, dateFinal, companyID, descont} = req.query;
+        console.log(req.query)
+        const bead = await Bead.findAll({
+            // attributes: [[ Sequelize.literal(`(COALESCE(value, 0) - ${descont}) * COALESCE(amount, 0)`), 'valueTotal'],[ Sequelize.literal(`COALESCE(value, 0)- ${descont}`), 'value'], 'id', 'amount', 'patch', 'dateEntry', 'companyID', 'reference'],
+            attributes: [[ Sequelize.literal(`COALESCE(value, 0)- ${descont}`), 'value'], 'id', 'amount', 'patch', 'dateEntry', 'companyID', 'reference'],
+            include: [
+            {
+                association: 'companies',
+                attributes: ["companyName"],
+                // where: {id : companyID}, 
+            },
+            {
+                association: 'users',
+                attributes: ['name'],
+                where: {id: userID}
+            }],
+            where: {
+                dateEntry: {
+                    [Op.between]: [dateEntry, dateFinal]
+                }
+            },
+            order:[['dateEntry', 'DESC']]
+            
+        })
+        let sumValueTotal = await bead.reduce((sum,item) =>{
+            return sum + item.amount * item.value
+        },0)
+        let sumBags = await bead.reduce((sum,item) =>{
+            return sum + item.amount 
+        },0)       
+        if(bead.length){
+            ejs.renderFile(path.join(__dirname, '../views/beads/paymentUser.ejs'),
+             {status:{value: '0',messege: 'requisição efetuada com sucesso'},  moment:moment,data:{bead, moment, dateEntry, dateFinal, sumValueTotal, sumBags}}, 
+            (err, html)=>{
+                if(err){
+                    console.log(err)
+                }else{
+                    pdf.create(html, options).toFile("pdf/relatorio_de_pagamento_user.pdf", (error,res) =>{
+                        if(error){
+                            console.log(error)
+                        }else{
+                            console.log(res);
+                        }
+                    })
+                }
+            })
+            pdf2base64("/Users/bs59035/workspace/node/rest_empresa/pdf/relatorio_de_pagamento_user.pdf").then(response => {    
+                var base64 = response;
+                return res.status(200).json({status:{value: '0',messege: 'requisição efetuada com sucesso'}, data:{base64}});
+    
+                }).catch(
+                    (error) => {
+                    return res.status(400).json({status:{value: '-1', description:'Falha interna'},messege: 'erro inesperado'});
+                }
+                )
+         }else{
+             return res.status(200).json({status:{value: '0',messege: 'requisição efetuada com sucesso'}, data:bead});
+         }
     }
 }

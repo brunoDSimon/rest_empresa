@@ -3,13 +3,13 @@ const authConfig = require('../config/auth.json');
 
 module.exports = (req, res, next) =>{
     const authHeaders = req.headers.authorization;
-    console.log(authConfig, 'auth')
+    // console.log(authConfig, 'auth')
     if(!authHeaders){
         return res.status(401).send({error:'Token invalid 1'});
     }
 
     const parts = authHeaders.split(' ');
-    console.log(parts, 'pats')
+    // console.log(parts, 'pats')
     if(!(parts.length === 2)){
         return res.status(401).send({error:'Token Error 2'});
 
