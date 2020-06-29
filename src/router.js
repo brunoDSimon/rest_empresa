@@ -32,7 +32,7 @@ routes.get('/bead/sumTotalGroupCompanies',authMiddlewares, BeadController.SumCom
 routes.get('/bead/sumGroupMonth',authMiddlewares, BeadController.sumGroupMonth);
 routes.get('/bead/SumGroupMonthCompanies',authMiddlewares, BeadController.sumGroupMonthCompanies);
 routes.get('/bead/totalSumPeriod',authMiddlewares, BeadController.totalSumPeriod);
-routes.get('/bead/geratePaymentUser', BeadController.generatePayment);
+routes.get('/bead/geratePaymentUser',authMiddlewares, BeadController.generatePayment);
 
 routes.post('/user', UsersController.store)
 routes.get('/user', UsersController.index);
