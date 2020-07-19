@@ -1,13 +1,13 @@
 module.exports = {
     dialect: 'mysql',
     host: 'us-cdbr-east-02.cleardb.com',
-    username: 'be18022bd486fd',
-    password: '08fbf2c3',
-    database: 'heroku_89e921c4f3234e5',
+    username: 'bd7578395d7a7e',
+    password: 'df201cb3',
+    database: 'heroku_89b16f0f06faa82',
     define:{
         timestamps: true,
         underscored: false,
         timezone: "-03:00"
     },
 };
-// be18022bd486fd:08fbf2c3@us-cdbr-east-02.cleardb.com/heroku_89e921c4f3234e5
+// bd7578395d7a7e:df201cb3@us-cdbr-east-02.cleardb.com/heroku_89b16f0f06faa82?reconnect=true
