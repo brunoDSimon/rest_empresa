@@ -9,19 +9,26 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      // user_id:{
-      //   type: Sequelize.INTEGER,
-      //   allowNull: false,
-      //   reference: { model: 'user', key: 'id'},
-      //   onUpdate:'CASCADE',
-      //   onDelete: 'SET NULL'
-      // },
+      companyID:{
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        reference: { model: 'companies', key: 'id'},
+        onUpdate:'CASCADE',
+        onDelete: 'CASCADE'
+      },
+      userID:{
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        reference: {model: 'users', key: 'id'},
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
+      },
       reference: {
         type: Sequelize.STRING,
         allowNull: false
       },
       value: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.DOUBLE,
         allowNull: false
       },
       amount: {
@@ -31,6 +38,10 @@ module.exports = {
       patch: {
         type: Sequelize.STRING,
         allowNull: false
+      },
+      dateEntry: {
+        type: Sequelize.DATEONLY,
+        allowNull: false,
       },
       createdAt: {
         type: Sequelize.DATE,

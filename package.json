@@ -10,10 +10,20 @@
     "start": "nodemon src/server.js"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "ejs": "^3.0.2",
     "express": "^4.17.1",
+    "express-promise": "^0.4.0",
+    "fs": "0.0.1-security",
+    "html-pdf": "^2.2.0",
+    "jsonwebtoken": "^8.5.1",
+    "moment": "^2.24.0",
     "mysql": "^2.18.1",
     "mysql2": "^2.1.0",
     "nodemon": "^2.0.2",
+    "path": "^0.12.7",
+    "pdf-to-base64": "^1.0.2",
     "sequelize": "^5.21.5"
   },
   "devDependencies": {
