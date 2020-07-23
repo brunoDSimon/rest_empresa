@@ -17,7 +17,7 @@ module.exports = {
         const users = await Users.findAll({
             attributes: ['id','email', 'name']
         });
-        return res.status(200).json({status:{value:'0', messege: 'requisicão efetuada com sucesso' },data:users, messeger: 'requisição efetuada com sucesso'})
+        return res.status(200).json({status:{value:'0', messege: 'requisicão efetuada com sucesso' },data:{users}})
     },
     async store(req,res){
         const {email, password, name} = req.body;
