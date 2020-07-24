@@ -5,7 +5,8 @@ module.exports = {
     async index(req, res){
       
         const companies = await Companies.findAll();
-        return res.status(200).send({status:{value: '0',messege: 'requisição efetuada com sucesso'},data:companies, user: req.userId })
+        // return res.status(200).send({status:{value: '0',messege: 'requisição efetuada com sucesso'},data:companies, user: req.userId })
+        return res.status(200).send({status:{value: '0',messege: 'requisição efetuada com sucesso'},data:{companies} })
     },
     async return(req,res){
         const {cnpj} = req.params;
