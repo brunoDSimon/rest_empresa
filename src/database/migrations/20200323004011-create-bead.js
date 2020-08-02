@@ -43,6 +43,10 @@ module.exports = {
         type: Sequelize.DATEONLY,
         allowNull: false,
       },
+      dateFinal: {
+        type: Sequelize.DATEONLY,
+        allowNull: true,
+      },
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false,

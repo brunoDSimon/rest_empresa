@@ -17,7 +17,6 @@ routes.use((req,res, next) =>{
 })
 // routes.use(authMiddlewares);
 routes.get('/companies',authMiddlewares, CompaniesControler.index);
-// routes.get('/companies', CompaniesControler.index);
 routes.post('/companies',authMiddlewares, CompaniesControler.store);
 routes.get('/companies/verificarCNPJ/:cnpj',authMiddlewares, CompaniesControler.return);
 routes.delete('/companies/:id',authMiddlewares, CompaniesControler.delete);
@@ -25,7 +24,7 @@ routes.post('/companies/update/:id',authMiddlewares, CompaniesControler.update);
 
 routes.get('/bead',authMiddlewares, BeadController.index);
 routes.post('/bead',authMiddlewares, BeadController.store);
-routes.post('/bead/:id',authMiddlewares, BeadController.update);
+routes.post('/bead/update/:id',authMiddlewares, BeadController.update);
 routes.delete('/bead/:id',authMiddlewares, BeadController.delete);
 routes.get('/pdf',authMiddlewares, BeadController.pdf)
 routes.get('/bead/sumTotalGroupCompanies',authMiddlewares, BeadController.SumCompaniesValueTotal);
@@ -34,6 +33,8 @@ routes.get('/bead/SumGroupMonthCompanies',authMiddlewares, BeadController.sumGro
 routes.get('/bead/totalSumPeriod',authMiddlewares, BeadController.totalSumPeriod);
 routes.get('/bead/geratePaymentUser',authMiddlewares, BeadController.generatePayment);
 routes.get('/bead/consultValuesPaymentUser',authMiddlewares, BeadController.consultValuesPaymentUser);
+routes.get('/bead/pesquisaID', BeadController.indexOne);
+
 routes.post('/user', UsersController.store)
 routes.get('/user', UsersController.index);
 routes.post('/auth', UsersController.auth);

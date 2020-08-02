@@ -3,7 +3,7 @@ module.exports = {
     host: 'localhost',
     username: 'root',
     password: 'root',
-    database: 'empresarest2',
+    database: 'empresarest3',
     define:{
         timestamps: true,
         underscored: false,
