@@ -19,7 +19,7 @@ module.exports = {
         const {companyID, dateEntry, userID, dateFinal} = req.query;
         if(companyID != undefined && userID !=undefined && isNaN(userID)){
             const bead = await Bead.findAll({
-                attributes: [[ Sequelize.literal('COALESCE(value, 0) * COALESCE(amount, 0)'), 'valueTotal'],'id', 'value', 'amount', 'patch', 'dateEntry', 'companyID', 'reference'],
+                attributes: [[ Sequelize.literal('COALESCE(value, 0) * COALESCE(amount, 0)'), 'valueTotal'],'id', 'value', 'amount', 'patch', 'dateEntry','dateFinal', 'companyID', 'reference'],
                 include: [{
                     association: 'companies',
                     attributes: ["companyName"],
@@ -48,7 +48,7 @@ module.exports = {
 
         }else{
             const bead = await Bead.findAll({
-                attributes: [[ Sequelize.literal('COALESCE(value, 0) * COALESCE(amount, 0)'), 'valueTotal'],'id', 'value', 'amount', 'patch', 'dateEntry', 'companyID', 'reference'],
+                attributes: [[ Sequelize.literal('COALESCE(value, 0) * COALESCE(amount, 0)'), 'valueTotal'],'id', 'value', 'amount', 'patch', 'dateEntry','dateFinal', 'companyID', 'reference'],
                 include: [{
                     association: 'companies',
                     attributes: ["companyName"],
@@ -76,6 +76,16 @@ module.exports = {
         }
        return res.status(400).json({messege:'erro ao invocar serviço'})
     },
+    async indexOne(req,res){
+        const {id} = req.query;
+        console.log(id);
+        const bead = await Bead.findOne({where:{ id:id }})
+        if(bead.length){
+            return res.status(200).json({status:{value: '0',messege: 'requisição efetuada com sucesso'},data:{bead}}); 
+        }else{
+            return res.status(200).json({status:{value: '0',messege: 'requisição efetuada com sucesso'},data:{bead}}); 
+        }
+    },
     async store(req,res){
         const {reference, value, amount, patch, dateEntry, companyID, userID} = req.body;
         if(reference, value, amount, patch, dateEntry, companyID, userID ){
@@ -88,15 +98,16 @@ module.exports = {
     },
     async update(req,res){
         const {id} = req.params
-        const {reference, value, amount, patch, dateEntry, companyID,userID} = req.body;
-        Bead.update({reference, value, amount, patch, dateEntry, companyID,userID},{
+        const {reference, value, amount, patch, dateEntry,dateFinal, companyID,userID} = req.body;
+        const bead = await Bead.update({reference, value, amount, patch, dateEntry, dateFinal, companyID,userID},{
             where: {id: id}
-        }).then(bead =>{
-            return res.status(200).json({status:{value: '0',messege: 'requisição efetuada com sucesso'},data:bead})
+        })
+        if(bead.length){
+            return res.status(200).json({status:{value: '0',messege: 'requisição efetuada com sucesso'},data:{bead}})
+        }else{
+            return res.status(400).json({status:{value: '-1', description:'Falha interna'},messege: 'fail update'})
+        }
 
-        }).catch(err =>{
-            return res.status(400).json({status:{value: '-1', description:'Falha interna'},err, messege: 'fail update'})
-        });
     },
     async delete(req,res){
         const {id} = req.params;
@@ -117,7 +128,7 @@ module.exports = {
         }
         const {companyID, dateEntry, dateFinal} = req.query;
         const bead = await Bead.findAll({
-            attributes: [[ Sequelize.literal('COALESCE(value, 0) * COALESCE(amount, 0)'), 'valueTotal'],'id', 'value', 'amount', 'patch', 'dateEntry', 'companyID', 'reference'],
+            attributes: [[ Sequelize.literal('COALESCE(value, 0) * COALESCE(amount, 0)'), 'valueTotal'],'id', 'value', 'amount', 'patch', 'dateEntry','dateFinal', 'companyID', 'reference'],
             include: [{
                 association: 'companies',
                 attributes: ["companyName"],
@@ -126,7 +137,9 @@ module.exports = {
         where: {
             dateEntry: {
                 [Op.between]: [dateEntry, dateFinal]
-            }
+            },
+             dateFinal: {[Op.ne]: null}
+            
         }
         }).then(bead =>{
             if(!bead.length){
@@ -219,7 +232,7 @@ module.exports = {
         const {userID, dateEntry, dateFinal, companyID, descont} = req.query;
         const bead = await Bead.findAll({
             // attributes: [[ Sequelize.literal(`(COALESCE(value, 0) - ${descont}) * COALESCE(amount, 0)`), 'valueTotal'],[ Sequelize.literal(`COALESCE(value, 0)- ${descont}`), 'value'], 'id', 'amount', 'patch', 'dateEntry', 'companyID', 'reference'],
-            attributes: [[ Sequelize.literal(`COALESCE(value, 0)- ${descont}`), 'value'], 'id', 'amount', 'patch', 'dateEntry', 'companyID', 'reference'],
+            attributes: [[ Sequelize.literal(`COALESCE(value, 0)- ${descont}`), 'value'], 'id', 'amount', 'patch', 'dateEntry','dateFinal', 'companyID', 'reference'],
             include: [
             {
                 association: 'companies',
@@ -234,7 +247,9 @@ module.exports = {
             where: {
                 dateEntry: {
                     [Op.between]: [dateEntry, dateFinal]
-                }
+                },
+                dateFinal: {[Op.ne]: null}
+
             },
             order:[['dateEntry', 'DESC']]
             
@@ -281,7 +296,7 @@ module.exports = {
         const {userID, dateEntry, dateFinal, descont} = req.query;
         const bead = await Bead.findAll({
             // attributes: [[ Sequelize.literal(`(COALESCE(value, 0) - ${descont}) * COALESCE(amount, 0)`), 'valueTotal'],[ Sequelize.literal(`COALESCE(value, 0)- ${descont}`), 'value'], 'id', 'amount', 'patch', 'dateEntry', 'companyID', 'reference'],
-            attributes: [[ Sequelize.literal(`COALESCE(value, 0)- ${descont}`), 'value'], 'id', 'amount', 'patch', 'dateEntry', 'companyID', 'reference'],
+            attributes: [[ Sequelize.literal(`(COALESCE(value, 0)- ${descont}) * COALESCE(amount, 0)`), 'valueTotal'],[ Sequelize.literal(`COALESCE(value, 0)- ${descont}`), 'value'], 'id', 'amount', 'patch', 'dateEntry','dateFinal', 'companyID', 'reference'],
             include: [
             {
                 association: 'companies',
