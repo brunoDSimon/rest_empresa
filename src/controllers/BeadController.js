@@ -91,7 +91,7 @@ module.exports = {
         if(reference, value, amount, patch, dateEntry, companyID, userID ){
             const bead = await Bead.create({reference, value,amount,  patch, dateEntry, companyID,userID});
             
-            return res.status(200).json({status:{value: '0',messege: 'requisição efetuada com sucesso'},data:bead});
+            return res.status(200).json({status:{value: '0',messege: 'requisição efetuada com sucesso'},data:{bead}});
         }else{
             return res.status(400).json({status:{value: '-1', description:'Falha interna'},messege: 'campos nao informado'});
         }
@@ -143,7 +143,7 @@ module.exports = {
         }
         }).then(bead =>{
             if(!bead.length){
-                return res.status(200).json({status:{value: '0',messege: 'requisição efetuada com sucesso'}, data:{bead}});
+                return res.status(200).json({status:{value: '-1',messege: 'Periodo não possui dados'}});
             }else{
                 let sumValueTotal = bead.reduce((sum,item) =>{
                     return sum + item.amount * item.value
@@ -168,9 +168,9 @@ module.exports = {
             }
            function fazerBase(){
                pdf2base64("pdf/relatorio_de_pagamento.pdf").then(response => {    
-                  return res.status(200).json({messege: 'requisação efetuada com sucesso', base64:response});
+                  return res.status(200).json({status:{value: '0',messege: 'requisição efetuada com sucesso'},data:{base64:response}})
               }).catch((error) => {
-                  return res.status(400).json({status:{value: '-1', description:'Falha interna'},messege: 'erro inesperado'});
+                  return res.status(400).json({status:{value: '-1', description:'Falha interna',messege: 'erro inesperado'}});
               })  
            } 
         }).catch(erro =>{
