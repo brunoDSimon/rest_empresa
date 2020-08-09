@@ -34,18 +34,19 @@ module.exports = {
     },
     async auth(req,res){
         const {email, password} = req.body
-
-        const user = await Users.findOne({email, where: {email:email}}).then(user =>{
+        Users.findOne({email, where: {email:email}}).then(user =>{
             if(user){
                 var correct = bcrypt.compareSync(password, user.password)
                 if(correct){
                     res.status(200).send({status:{value: '0',messege: 'requisição efetuada com sucesso' },data:{user,token:gerarToken({id:user.id})}})
                 }else{
-                    res.status(401).send({status:{value: '-1', description: 'Falha interna'},messege: 'verificar usuario ou senha'})
+                    res.status(401).send({status:{value: '-1', description: 'Falha interna',messege: 'verificar usuario ou senha'}})
                 }
             }else{
-                res.status(401).send({status:{value: '-1', description:'Falha interna'},messege: 'verificar usuario ou senha'}, )
+                res.status(401).send({status:{value: '-1', description:'Falha interna',messege: 'verificar usuario ou senha'}} )
             }
+        }).catch(error =>{
+            res.status(401).send({status:{value: '-1', description:'Falha interna',messege: 'servico fora'}} )
         })
         
     }
