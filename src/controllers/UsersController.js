@@ -40,13 +40,13 @@ module.exports = {
                 if(correct){
                     res.status(200).send({status:{value: '0',messege: 'requisição efetuada com sucesso' },data:{user,token:gerarToken({id:user.id})}})
                 }else{
-                    res.status(401).send({status:{value: '-1', description: 'Falha interna',messege: 'verificar usuario ou senha'}})
+                    res.status(401).send({status:{value: '-1', messege: 'verificar usuario ou senha'}})
                 }
             }else{
-                res.status(401).send({status:{value: '-1', description:'Falha interna',messege: 'verificar usuario ou senha'}} )
+                res.status(401).send({status:{value: '-1',messege: 'verificar usuario ou senha'}} )
             }
         }).catch(error =>{
-            res.status(401).send({status:{value: '-1', description:'Falha interna',messege: 'servico fora'}} )
+            res.status(401).send({status:{value: '-1' ,messege: 'servico fora'}} )
         })
         
     }
