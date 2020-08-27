@@ -5,7 +5,8 @@ module.exports = {
     async index(req, res){
       
         const companies = await Companies.findAll();
-        return res.status(200).send({status:{value: '0',messege: 'requisição efetuada com sucesso'},data:companies, user: req.userId })
+        // return res.status(200).send({status:{value: '0',messege: 'requisição efetuada com sucesso'},data:companies, user: req.userId })
+        return res.status(200).send({status:{value: '0',messege: 'requisição efetuada com sucesso'},data:{companies} })
     },
     async return(req,res){
         const {cnpj} = req.params;
@@ -23,7 +24,7 @@ module.exports = {
         if(!companies){
             if(companyName, cnpj, telephone,address,zipCode, number){
                 const companies = await Companies.create({companyName, cnpj, telephone, address, zipCode, number});
-                return res.status(200).send({status:{value: '0',messege: 'requisição efetuada com sucesso'},companies, messege: 'enviado com sucesso'});
+                return res.status(200).send({status:{value: '0',messege: 'requisição efetuada com sucesso'},data:{companies}});
             }else{
                 res.status(400).json({status:{value: '-1',description: 'requisição efetuada com sucesso'},messege: 'campos não foram enviados'})
             }
@@ -38,7 +39,7 @@ module.exports = {
         const companies = await Companies.update({companyName, cnpj, telephone, address, zipCode, number},{
             where: {id: id}
         });
-        return res.status(200).json({status:{value: '0',messege: 'requisição efetuada com sucesso'},companies, messege: 'update feito com sucesso'});
+        return res.status(200).json({status:{value: '0',messege: 'requisição efetuada com sucesso'}, data:{companies}});
     },
 
     async delete(req,res){

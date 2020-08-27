@@ -16,87 +16,86 @@ var fs = require('fs');
 
 module.exports = {
     async index(req, res){
-        const {companyID, dateEntry, userID, dateFinal} = req.query;
-        if(companyID != undefined && userID !=undefined && isNaN(userID)){
-            const bead = await Bead.findAll({
-                attributes: [[ Sequelize.literal('COALESCE(value, 0) * COALESCE(amount, 0)'), 'valueTotal'],'id', 'value', 'amount', 'patch', 'dateEntry', 'companyID', 'reference'],
-                include: [{
-                    association: 'companies',
-                    attributes: ["companyName"],
-                    where: {id : companyID}, 
-                },
-                {
-                    association: 'users',
-                    attributes: ['name'],
-                    where: {id: userID}
-                }
-            ],
-            where: {
+        const {companyID, dateEntry, dateFinal, dateFinalNotNul} = req.query;
+        let objetWhere;
+        if(dateFinalNotNul == 'true'){
+            objetWhere =  {
                 dateEntry: {
                     [Op.between]: [dateEntry, dateFinal]
-                }
-            }
-               
-            })
-            let sumValueTotal = await bead.reduce((sum,item) =>{
-                return sum + item.amount * item.value
-            },0)
-            let sumBags = await bead.reduce((sum,item) =>{
-                return sum + item.amount 
-            },0)
-            return res.status(200).json({status:{value: '0',messege: 'requisição efetuada com sucesso'},data:{bead, sumValueTotal, sumBags}});
+                },
+                dateFinal: {[Op.ne]: null}
 
+            }
         }else{
-            const bead = await Bead.findAll({
-                attributes: [[ Sequelize.literal('COALESCE(value, 0) * COALESCE(amount, 0)'), 'valueTotal'],'id', 'value', 'amount', 'patch', 'dateEntry', 'companyID', 'reference'],
-                include: [{
-                    association: 'companies',
-                    attributes: ["companyName"],
-                    where: {id : companyID}, 
-                },
-                {
-                    association: 'users',
-                    attributes: ['name'],
-                    // where: {id: userID}
-                }
-            ],
-            where: {
+            objetWhere =  {
                 dateEntry: {
                     [Op.between]: [dateEntry, dateFinal]
-                }
+                },
+                dateFinal: {[Op.eq]: null}
             }
-            })
-            let sumValueTotal = await bead.reduce((sum,item) =>{
+        }
+
+        Bead.findAll({
+            attributes: [[ Sequelize.literal('COALESCE(value, 0) * COALESCE(amount, 0)'), 'valueTotal'],'id', 'value', 'amount', 'patch', 'dateEntry','dateFinal', 'companyID', 'reference'],
+            include: [{
+                association: 'companies',
+                attributes: ["companyName"],
+                where: {id : companyID}, 
+            },
+            {
+                association: 'users',
+                attributes: ['name'],
+            }
+        ],
+        where:objetWhere
+            
+        }).then((bead) =>{
+            let sumValueTotal =  bead.reduce((sum,item) =>{
                 return sum + item.amount * item.value
             },0)
-            let sumBags = await bead.reduce((sum,item) =>{
+            let sumBags =  bead.reduce((sum,item) =>{
                 return sum + item.amount 
             },0)
             return res.status(200).json({status:{value: '0',messege: 'requisição efetuada com sucesso'},data:{bead, sumValueTotal, sumBags}});
+        }).catch(erro =>{
+            return res.status(200).json({status:{value: '-1',messege: 'Error consulta invalida'}});
+        })
+        
+
+        
+    },
+    async indexOne(req,res){
+        const {id} = req.query;
+        console.log(id);
+        const bead = await Bead.findOne({where:{ id:id }})
+        if(bead.length){
+            return res.status(200).json({status:{value: '0',messege: 'requisição efetuada com sucesso'},data:{bead}}); 
+        }else{
+            return res.status(200).json({status:{value: '0',messege: 'requisição efetuada com sucesso'},data:{bead}}); 
         }
-       return res.status(400).json({messege:'erro ao invocar serviço'})
     },
     async store(req,res){
         const {reference, value, amount, patch, dateEntry, companyID, userID} = req.body;
         if(reference, value, amount, patch, dateEntry, companyID, userID ){
             const bead = await Bead.create({reference, value,amount,  patch, dateEntry, companyID,userID});
             
-            return res.status(200).json({status:{value: '0',messege: 'requisição efetuada com sucesso'},data:bead});
+            return res.status(200).json({status:{value: '0',messege: 'requisição efetuada com sucesso'},data:{bead}});
         }else{
             return res.status(400).json({status:{value: '-1', description:'Falha interna'},messege: 'campos nao informado'});
         }
     },
     async update(req,res){
         const {id} = req.params
-        const {reference, value, amount, patch, dateEntry, companyID,userID} = req.body;
-        Bead.update({reference, value, amount, patch, dateEntry, companyID,userID},{
+        const {reference, value, amount, patch, dateEntry,dateFinal, companyID,userID} = req.body;
+        const bead = await Bead.update({reference, value, amount, patch, dateEntry, dateFinal, companyID,userID},{
             where: {id: id}
-        }).then(bead =>{
-            return res.status(200).json({status:{value: '0',messege: 'requisição efetuada com sucesso'},data:bead})
+        })
+        if(bead.length){
+            return res.status(200).json({status:{value: '0',messege: 'requisição efetuada com sucesso'},data:{bead}})
+        }else{
+            return res.status(400).json({status:{value: '-1', description:'Falha interna'},messege: 'fail update'})
+        }
 
-        }).catch(err =>{
-            return res.status(400).json({status:{value: '-1', description:'Falha interna'},err, messege: 'fail update'})
-        });
     },
     async delete(req,res){
         const {id} = req.params;
@@ -117,7 +116,7 @@ module.exports = {
         }
         const {companyID, dateEntry, dateFinal} = req.query;
         const bead = await Bead.findAll({
-            attributes: [[ Sequelize.literal('COALESCE(value, 0) * COALESCE(amount, 0)'), 'valueTotal'],'id', 'value', 'amount', 'patch', 'dateEntry', 'companyID', 'reference'],
+            attributes: [[ Sequelize.literal('COALESCE(value, 0) * COALESCE(amount, 0)'), 'valueTotal'],'id', 'value', 'amount', 'patch', 'dateEntry','dateFinal', 'companyID', 'reference'],
             include: [{
                 association: 'companies',
                 attributes: ["companyName"],
@@ -126,11 +125,13 @@ module.exports = {
         where: {
             dateEntry: {
                 [Op.between]: [dateEntry, dateFinal]
-            }
+            },
+             dateFinal: {[Op.ne]: null}
+            
         }
         }).then(bead =>{
             if(!bead.length){
-                return res.status(200).json({status:{value: '0',messege: 'requisição efetuada com sucesso'}, data:{bead}});
+                return res.status(200).json({status:{value: '-1',messege: 'Periodo não possui dados'}});
             }else{
                 let sumValueTotal = bead.reduce((sum,item) =>{
                     return sum + item.amount * item.value
@@ -155,9 +156,9 @@ module.exports = {
             }
            function fazerBase(){
                pdf2base64("pdf/relatorio_de_pagamento.pdf").then(response => {    
-                  return res.status(200).json({messege: 'requisação efetuada com sucesso', base64:response});
+                  return res.status(200).json({status:{value: '0',messege: 'requisição efetuada com sucesso'},data:{base64:response}})
               }).catch((error) => {
-                  return res.status(400).json({status:{value: '-1', description:'Falha interna'},messege: 'erro inesperado'});
+                  return res.status(400).json({status:{value: '-1', description:'Falha interna',messege: 'erro inesperado'}});
               })  
            } 
         }).catch(erro =>{
@@ -219,7 +220,7 @@ module.exports = {
         const {userID, dateEntry, dateFinal, companyID, descont} = req.query;
         const bead = await Bead.findAll({
             // attributes: [[ Sequelize.literal(`(COALESCE(value, 0) - ${descont}) * COALESCE(amount, 0)`), 'valueTotal'],[ Sequelize.literal(`COALESCE(value, 0)- ${descont}`), 'value'], 'id', 'amount', 'patch', 'dateEntry', 'companyID', 'reference'],
-            attributes: [[ Sequelize.literal(`COALESCE(value, 0)- ${descont}`), 'value'], 'id', 'amount', 'patch', 'dateEntry', 'companyID', 'reference'],
+            attributes: [[ Sequelize.literal(`COALESCE(value, 0)- ${descont}`), 'value'], 'id', 'amount', 'patch', 'dateEntry','dateFinal', 'companyID', 'reference'],
             include: [
             {
                 association: 'companies',
@@ -234,7 +235,9 @@ module.exports = {
             where: {
                 dateEntry: {
                     [Op.between]: [dateEntry, dateFinal]
-                }
+                },
+                dateFinal: {[Op.ne]: null}
+
             },
             order:[['dateEntry', 'DESC']]
             
@@ -278,35 +281,50 @@ module.exports = {
        
     },
     async consultValuesPaymentUser(req, res, next){
-        const {userID, dateEntry, dateFinal, descont} = req.query;
-        const bead = await Bead.findAll({
-            // attributes: [[ Sequelize.literal(`(COALESCE(value, 0) - ${descont}) * COALESCE(amount, 0)`), 'valueTotal'],[ Sequelize.literal(`COALESCE(value, 0)- ${descont}`), 'value'], 'id', 'amount', 'patch', 'dateEntry', 'companyID', 'reference'],
-            attributes: [[ Sequelize.literal(`COALESCE(value, 0)- ${descont}`), 'value'], 'id', 'amount', 'patch', 'dateEntry', 'companyID', 'reference'],
+        const {userID, dateEntry, dateFinal, descont, dateFinalNotNul} = req.query;
+        let objetWhere;
+        if(dateFinalNotNul == 'true'){
+            objetWhere =  {
+                dateEntry: {
+                    [Op.between]: [dateEntry, dateFinal]
+                },
+                dateFinal: {[Op.ne]: null}
+
+            }
+        }else{
+            objetWhere =  {
+                dateEntry: {
+                    [Op.between]: [dateEntry, dateFinal]
+                },
+                dateFinal: {[Op.eq]: null}
+            }
+        }
+        Bead.findAll({
+            attributes: [[ Sequelize.literal(`(COALESCE(value, 0)- ${descont}) * COALESCE(amount, 0)`), 'valueTotal'],[ Sequelize.literal(`COALESCE(value, 0)- ${descont}`), 'value'], 'id', 'amount', 'patch', 'dateEntry','dateFinal', 'companyID', 'reference'],
             include: [
             {
                 association: 'companies',
                 attributes: ["companyName"],
-                // where: {id : companyID}, 
             },
             {
                 association: 'users',
                 attributes: ['name'],
                 where: {id: userID}
             }],
-            where: {
-                dateEntry: {
-                    [Op.between]: [dateEntry, dateFinal]
-                }
-            },
+            where: objetWhere,
             order:[['dateEntry', 'DESC']]
             
+        }).then(bead =>{
+            let sumValueTotal = bead.reduce((sum,item) =>{
+                return sum + item.amount * item.value
+            },0)
+            let sumBags = bead.reduce((sum,item) =>{
+                return sum + item.amount 
+            },0)       
+            return res.status(200).json({status:{value: '0',messege: 'requisição efetuada com sucesso'}, data:{bead,sumValueTotal,sumBags,descont}});
+        }).catch(error =>{
+            return res.status(200).json({status:{value: '-1',messege: 'Error consulta invalida'}});
         })
-        let sumValueTotal = await bead.reduce((sum,item) =>{
-            return sum + item.amount * item.value
-        },0)
-        let sumBags = await bead.reduce((sum,item) =>{
-            return sum + item.amount 
-        },0)       
-        return res.status(200).json({status:{value: '0',messege: 'requisição efetuada com sucesso'}, data:{bead,sumValueTotal,sumBags,descont}});
+       
     }
 }

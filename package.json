@@ -12,21 +12,21 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
-    "ejs": "^3.0.2",
+    "ejs": "^3.1.5",
     "express": "^4.17.1",
     "express-promise": "^0.4.0",
     "fs": "0.0.1-security",
     "html-pdf": "^2.2.0",
     "jsonwebtoken": "^8.5.1",
-    "moment": "^2.24.0",
+    "moment": "^2.27.0",
     "mysql": "^2.18.1",
     "mysql2": "^2.1.0",
-    "nodemon": "^2.0.2",
+    "nodemon": "^2.0.4",
     "path": "^0.12.7",
     "pdf-to-base64": "^1.0.2",
-    "sequelize": "^5.21.5",
-    "sequelize-cli": "^5.5.1"
+    "sequelize": "^6.3.4"
   },
   "devDependencies": {
+    "sequelize-cli": "^6.2.0"
   }
 }
