@@ -25,7 +25,15 @@ module.exports = {
       },
       reference: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        validate: {
+          customValidator(value) {
+            console.log(value)
+            if (value === null) {
+              throw new Error("Campo Referencia não enviado!");
+            }
+    
+        }
       },
       value: {
         type: Sequelize.DOUBLE,
