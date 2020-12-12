@@ -23,7 +23,7 @@ routes.delete('/companies/:id',authMiddlewares, CompaniesControler.delete);
 routes.post('/companies/update/:id',authMiddlewares, CompaniesControler.update);
 
 routes.get('/bead',authMiddlewares, BeadController.index);
-routes.post('/bead',authMiddlewares, BeadController.store);
+routes.post('/bead', BeadController.store);
 routes.post('/bead/update/:id',authMiddlewares, BeadController.update);
 routes.delete('/bead/:id',authMiddlewares, BeadController.delete);
 routes.get('/pdf',authMiddlewares, BeadController.pdf)

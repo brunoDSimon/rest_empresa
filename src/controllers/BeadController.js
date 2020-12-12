@@ -76,26 +76,24 @@ module.exports = {
     },
     async store(req,res){
         const {reference, value, amount, patch, dateEntry, companyID, userID} = req.body;
-        if(reference, value, amount, patch, dateEntry, companyID, userID ){
-            const bead = await Bead.create({reference, value,amount,  patch, dateEntry, companyID,userID});
-            
-            return res.status(200).json({status:{value: '0',messege: 'requisição efetuada com sucesso'},data:{bead}});
-        }else{
-            return res.status(400).json({status:{value: '-1', description:'Falha interna'},messege: 'campos nao informado'});
-        }
+           Bead.create({reference, value,amount,  patch, dateEntry, companyID,userID}).then(bead =>{
+               console.log(bead)
+             return res.status(200).json({status:{value: '0',messege: 'requisição efetuada com sucesso'},data:{bead}});
+           }).catch(error =>{
+            return res.status(400).json({status:{value: '-1', description:'Falha interna',error},messege: 'campos nao informado'});
+           });
+
     },
     async update(req,res){
         const {id} = req.params
         const {reference, value, amount, patch, dateEntry,dateFinal, companyID,userID} = req.body;
-        const bead = await Bead.update({reference, value, amount, patch, dateEntry, dateFinal, companyID,userID},{
+      Bead.update({reference, value, amount, patch, dateEntry, dateFinal, companyID,userID},{
             where: {id: id}
-        })
-        if(bead.length){
+        }).then(bead =>{
             return res.status(200).json({status:{value: '0',messege: 'requisição efetuada com sucesso'},data:{bead}})
-        }else{
+        }).catch(error =>{
             return res.status(400).json({status:{value: '-1', description:'Falha interna'},messege: 'fail update'})
-        }
-
+        })
     },
     async delete(req,res){
         const {id} = req.params;
@@ -168,15 +166,18 @@ module.exports = {
       
     },
     async SumCompaniesValueTotal(req,res){
-        const beadSumGroup = await Bead.findAll({
+        Bead.findAll({
             attributes: [[Sequelize.literal('SUM(Bead.value * Bead.amount)'), 'resultGroup']],
             include: [{
                 association: 'companies',
                 attributes: ["companyName"],
             }],
             group:['companyID'],
+        }).then(beadSumGroup =>{
+            return res.status(200).send({status:{value: '0',messege: 'requisição efetuada com sucesso'},data:{beadSumGroup }});
+        }).catch(erro =>{
+            return res.status(400).json({status:{value: '-1', description:'Falha interna'},messege: 'erro inesperado'});
         });
-        return res.status(200).send({status:{value: '0',messege: 'requisição efetuada com sucesso'},data:{beadSumGroup }});
     },
     async sumGroupMonth(req,res){
         const beadGroupMonth = await Bead.findAll({
