@@ -3,12 +3,24 @@ const { Model, DataTypes } = require('sequelize');
 class Companies extends Model {
     static init(sequelize) {
       super.init({
-        companyName: DataTypes.STRING,
-        cnpj: DataTypes.INTEGER,
-        telephone: DataTypes.INTEGER,
-        address: DataTypes.STRING,
-        zipCode: DataTypes.INTEGER,
-        number: DataTypes.INTEGER
+        companyName: {
+          type: DataTypes.STRING
+        },
+        cnpj: {
+          type: DataTypes.INTEGER
+        },
+        telephone: {
+          type: DataTypes.INTEGER
+        },
+        address: {
+          type: DataTypes.STRING
+        },
+        zipCode: {
+          type: DataTypes.INTEGER
+        },
+        number: {
+          type: DataTypes.INTEGER
+        }
       }, {
         sequelize
       })
