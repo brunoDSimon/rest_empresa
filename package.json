@@ -24,7 +24,8 @@
     "nodemon": "^2.0.6",
     "path": "^0.12.7",
     "pdf-to-base64": "^1.0.3",
-    "sequelize": "^6.3.5"
+    "sequelize": "^6.3.5",
+    "validator": "^13.5.2"
   },
   "devDependencies": {
     "sequelize-cli": "^6.2.0"

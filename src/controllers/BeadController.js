@@ -67,12 +67,11 @@ module.exports = {
     async indexOne(req,res){
         const {id} = req.query;
         console.log(id);
-        const bead = await Bead.findOne({where:{ id:id }})
-        if(bead.length){
+        Bead.findOne({where:{ id:id }}).then((bead) =>{
             return res.status(200).json({status:{value: '0',messege: 'requisição efetuada com sucesso'},data:{bead}}); 
-        }else{
-            return res.status(200).json({status:{value: '0',messege: 'requisição efetuada com sucesso'},data:{bead}}); 
-        }
+        }).catch((error) =>{
+            return res.status(400).json({status:{value: '-1', description:'Falha interna',error}});
+        })
     },
     async store(req,res){
         const {reference, value, amount, patch, dateEntry, companyID, userID} = req.body;
@@ -165,6 +164,7 @@ module.exports = {
        
       
     },
+
     async SumCompaniesValueTotal(req,res){
         Bead.findAll({
             attributes: [[Sequelize.literal('SUM(Bead.value * Bead.amount)'), 'resultGroup']],
@@ -179,6 +179,7 @@ module.exports = {
             return res.status(400).json({status:{value: '-1', description:'Falha interna'},messege: 'erro inesperado'});
         });
     },
+
     async sumGroupMonth(req,res){
         const beadGroupMonth = await Bead.findAll({
             attributes: [[Sequelize.literal('SUM(Bead.value * Bead.amount)'), 'resultGroup'],[Sequelize.fn('date_format', Sequelize.col('dateEntry'), '%Y-%m'), 'periodo']],
@@ -187,6 +188,7 @@ module.exports = {
         })
         return res.status(200).send({status:{value: '0',messege: 'requisição efetuada com sucesso'},data:{beadGroupMonth }});
     },
+
     async sumGroupMonthCompanies(req,res){
         const beadSumGroupMonth = await Bead.findAll({
             attributes: [[Sequelize.literal('SUM(Bead.value * Bead.amount)'), 'resultGroup'],[Sequelize.fn('date_format', Sequelize.col('dateEntry'), '%Y-%m'), 'periodo']],
@@ -199,18 +201,23 @@ module.exports = {
         });
         return res.status(200).send({status:{value: '0',messege: 'requisição efetuada com sucesso'},data:beadSumGroupMonth});
     },
+
     async totalSumPeriod(req,res){
         const {dateEntry, dateFinal} = req.query;
-        const totalSumPeriod = await Bead.findAll({
+        Bead.findAll({
             attributes: [[Sequelize.literal('SUM(Bead.value * Bead.amount)'), 'valueTotal'],[Sequelize.literal('SUM(Bead.amount)'), 'sumBags']],
             where:{
                 dateEntry:{
                     [Op.between]: [dateEntry, dateFinal]
                 }
             } 
+        }).then(totalSumPeriod => {
+            return res.status(200).send({status:{value: '0',messege: 'requisição efetuada com sucesso'},data:{totalSumPeriod, periodo:{dateEntry,dateFinal}}});
+        }).catch(error => {
+            return res.status(400).json({status:{value: '-1', description:'Falha interna'},messege: 'erro inesperado'});
         });
-        return res.status(200).send({status:{value: '0',messege: 'requisição efetuada com sucesso'},data:{totalSumPeriod, periodo:{dateEntry,dateFinal}}});
     },
+
     async generatePayment(req,res, next){
         let options ={
             "format": "A4",
@@ -281,6 +288,7 @@ module.exports = {
         })
        
     },
+
     async consultValuesPaymentUser(req, res, next){
         const {userID, dateEntry, dateFinal, descont, dateFinalNotNul} = req.query;
         let objetWhere;

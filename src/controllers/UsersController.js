@@ -13,12 +13,18 @@ function gerarToken(params ={}) {
 }
 
 module.exports = {
-    async index(req,res){
-        const users = await Users.findAll({
+    
+    async index(req,res, next){
+        Users.findAll({
             attributes: ['id','email', 'name']
+        }).then((user) =>{
+            return res.status(200).json({status:{value:'0', messege: 'requisicão efetuada com sucesso' },data:{user}})
+        }).catch((error) =>{
+            res.status(401).send({status:{value: '-1', description: 'Falha interna',messege: error}})
         });
-        return res.status(200).json({status:{value:'0', messege: 'requisicão efetuada com sucesso' },data:{users}})
+        next();
     },
+
     async store(req,res){
         const {email, password, name} = req.body;
         const users = await Users.findOne({email, where: {email:email}});
@@ -26,12 +32,16 @@ module.exports = {
         if(!users){
             var salt = await bcrypt.genSalt(10);
             var hash = await bcrypt.hashSync(password, salt)
-            await Users.create({email: email, password: hash, name: name});
-            return res.status(200).json({status:{value: '0',messege: 'requisição efetuada com sucesso'},messege: 'Usuario criado'});
+           Users.create({email: email, password: hash, name: name}).then((user) =>{
+               return res.status(200).json({status:{value: '0',messege: 'requisição efetuada com sucesso'},messege: 'Usuario criado'});
+           }).catch(error =>{
+                res.status(500).send({status:{value: '-1', description: 'Falha interna',messege: error}})
+           });
         }else{
-            res.status(200).json({status:{value: '0',messege: 'requisição efetuada com sucesso'},messege: 'Usuario existente'});
+            res.status(200).json({status:{value: '0',messege: 'requisição efetuada com sucesso'},data:'E-mail já cadastrado'});
         }
     },
+
     async auth(req,res){
         const {email, password} = req.body
         Users.findOne({email, where: {email:email}}).then(user =>{
