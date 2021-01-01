@@ -22,7 +22,6 @@ module.exports = {
         }).catch((error) =>{
             res.status(401).send({status:{value: '-1', description: 'Falha interna',messege: error}})
         });
-        next();
     },
 
     async store(req,res){
