@@ -35,8 +35,8 @@ routes.get('/bead/geratePaymentUser',authMiddlewares, BeadController.generatePay
 routes.get('/bead/consultValuesPaymentUser',authMiddlewares, BeadController.consultValuesPaymentUser);
 routes.get('/bead/pesquisaID', BeadController.indexOne);
 
-routes.post('/user', UsersController.store)
-routes.get('/user', UsersController.index);
+routes.post('/user',authMiddlewares, UsersController.store)
+routes.get('/user',authMiddlewares, UsersController.index);
 routes.post('/auth', UsersController.auth);
 
 module.exports = routes;
