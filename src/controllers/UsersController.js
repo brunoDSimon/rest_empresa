@@ -14,13 +14,13 @@ function gerarToken(params ={}) {
 
 module.exports = {
     
-    async index(req,res, next){
+    async index(req,res){
         Users.findAll({
             attributes: ['id','email', 'name']
         }).then((user) =>{
             return res.status(200).json({status:{value:'0', messege: 'requisicão efetuada com sucesso' },data:{user}})
-        }).catch((error) =>{
-            res.status(401).send({status:{value: '-1', description: 'Falha interna',messege: error}})
+        }).catch(error =>{
+            res.status(500).send({status:{value: '-1', description: 'Falha interna',messege: error}})
         });
     },
 
