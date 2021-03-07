@@ -32,6 +32,7 @@ class Users extends Model {
     }
     static associate(models){
       this.hasMany(models.Bead, { foreignKey: 'userId', as: 'beads' });
+      this.hasMany(models.Financial, { foreignKey: 'userId', as: 'financial' });
     }
   }
   

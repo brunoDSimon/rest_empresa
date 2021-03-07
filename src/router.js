@@ -2,6 +2,8 @@ const express = require('express');
 const BeadController = require("./controllers/BeadController");
 const CompaniesControler = require("./controllers/CompaniesController")
 const UsersController = require("./controllers/UsersController");
+const FinancialController = require("./controllers/FinancialController");
+
 const authMiddlewares = require('./middlewares/auth');
 
 const routes = express.Router();
