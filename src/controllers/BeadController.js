@@ -64,6 +64,7 @@ module.exports = {
 
         
     },
+
     async indexOne(req,res){
         const {id} = req.query;
         console.log(id);
@@ -73,6 +74,7 @@ module.exports = {
             return res.status(400).json({status:{value: '-1', description:'Falha interna',error}});
         })
     },
+
     async store(req,res){
         const {reference, value, amount, patch, dateEntry, companyID, userID} = req.body;
            Bead.create({reference, value,amount,  patch, dateEntry, companyID,userID}).then(bead =>{
@@ -83,6 +85,7 @@ module.exports = {
            });
 
     },
+
     async update(req,res){
         const {id} = req.params
         const {reference, value, amount, patch, dateEntry,dateFinal, companyID,userID} = req.body;
@@ -94,6 +97,7 @@ module.exports = {
             return res.status(400).json({status:{value: '-1', description:'Falha interna'},messege: 'fail update'})
         })
     },
+
     async delete(req,res){
         const {id} = req.params;
 
@@ -104,6 +108,7 @@ module.exports = {
 
       })
     },
+
     async pdf(req,res){
         let options ={
             "format": "A4",
@@ -166,12 +171,14 @@ module.exports = {
     },
 
     async SumCompaniesValueTotal(req,res){
+        const {periodo} = req.query
         Bead.findAll({
             attributes: [[Sequelize.literal('SUM(Bead.value * Bead.amount)'), 'resultGroup']],
             include: [{
                 association: 'companies',
                 attributes: ["companyName"],
             }],
+            where: Sequelize.where(Sequelize.fn('YEAR', Sequelize.col('dateEntry')), periodo),
             group:['companyID'],
         }).then(beadSumGroup =>{
             return res.status(200).send({status:{value: '0',messege: 'requisição efetuada com sucesso'},data:{beadSumGroup }});
@@ -181,15 +188,18 @@ module.exports = {
     },
 
     async sumGroupMonth(req,res){
+        const {periodo} = req.query
         const beadGroupMonth = await Bead.findAll({
             attributes: [[Sequelize.literal('SUM(Bead.value * Bead.amount)'), 'resultGroup'],[Sequelize.fn('date_format', Sequelize.col('dateEntry'), '%Y-%m'), 'periodo']],
             group:[Sequelize.fn('date_format', Sequelize.col('dateEntry'), '%Y-%m')],
-            order:[Sequelize.fn('date_format', Sequelize.col('dateEntry'), '%Y-%m')]
+            order:[Sequelize.fn('date_format', Sequelize.col('dateEntry'), '%Y-%m')],
+            where: Sequelize.where(Sequelize.fn('YEAR', Sequelize.col('dateEntry')), periodo),
         })
         return res.status(200).send({status:{value: '0',messege: 'requisição efetuada com sucesso'},data:{beadGroupMonth }});
     },
 
     async sumGroupMonthCompanies(req,res){
+        const {periodo} = req.query
         const beadSumGroupMonth = await Bead.findAll({
             attributes: [[Sequelize.literal('SUM(Bead.value * Bead.amount)'), 'resultGroup'],[Sequelize.fn('date_format', Sequelize.col('dateEntry'), '%Y-%m'), 'periodo']],
             include: [{
@@ -197,7 +207,8 @@ module.exports = {
                 attributes: ["companyName"],
             }],
             group:['companyID',Sequelize.fn('date_format', Sequelize.col('dateEntry'), '%Y-%m')],
-            order:[Sequelize.fn('date_format', Sequelize.col('dateEntry'), '%Y-%m')]
+            order:[Sequelize.fn('date_format', Sequelize.col('dateEntry'), '%Y-%m')],
+            where: Sequelize.where(Sequelize.fn('YEAR', Sequelize.col('dateEntry')), periodo),
         });
         return res.status(200).send({status:{value: '0',messege: 'requisição efetuada com sucesso'},data:beadSumGroupMonth});
     },
